@@ -3,10 +3,10 @@
     <div>
       <form @submit.prevent="submitForm" class="form">
         <div>
-          <label for="loginId">id:</label>
-          <input id="loginId" type="text" v-model="loginId" />
+          <label for="userId">id:</label>
+          <input id="userId" type="text" v-model="userId" />
           <p class="validation-text">
-            <span class="warning" v-if="!isUsernameValid && loginId">
+            <span class="warning" v-if="!userId">
               아이디를 입력해주세요
             </span>
           </p>
@@ -16,15 +16,13 @@
           <input id="password" type="text" v-model="password" />
         </div>
         <button
-          :disabled="!isUsernameValid || !password"
           type="submit"
           class="btn"
-          :class="!isUsernameValid || !password ? 'disabled' : null"
+          :class="!userId || !password ? 'disabled' : null"
         >
         로그인
         </button>
-      </form>
-      <p class="log">{{ logMessage }}</p>
+      </form>      
     </div>
   </div>
 </template>
@@ -33,9 +31,12 @@
 export default {
   data(){
     return{
-      loginId: '',
+      userId: '',
       password: '',
     }
+  },
+  methods:{
+    
   }
 }
 </script>
