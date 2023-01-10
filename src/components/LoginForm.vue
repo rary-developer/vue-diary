@@ -21,7 +21,7 @@
           :class="!userId || !password ? 'disabled' : null"
         >
         로그인
-        </button>
+        </button>                
       </form>      
     </div>
   </div>
@@ -36,7 +36,24 @@ export default {
     }
   },
   methods:{
-    
+    async submitForm(){
+      try{
+        const userData = {
+          userId: this.userId,
+          password: this.password,
+        }
+        await this.$store.dispatch('LOGIN', userData);
+        
+      }catch(error){
+        console.error(error);
+      }finally{
+        this.initForm();
+      }
+    },
+    initForm(){
+      this.userId = '';
+      this.password = '';
+    }
   }
 }
 </script>

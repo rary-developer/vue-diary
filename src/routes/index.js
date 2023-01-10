@@ -1,16 +1,23 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import  CalendarView  from '../views/CalendarView.vue';
+//import  CalendarView  from '../views/CalendarView.vue';
 
 Vue.use(VueRouter);
 
-export const router = new VueRouter({
+export default new VueRouter({
   mode: 'history',
   routes: [
     {
       path: '/',
-      component: CalendarView,
-
-    }
+      redirect:'/login',
+    },
+    {
+      path: '/login',
+      component: () => import('@/views/LoginPage.vue'),
+    },
+    {
+      path: '/signup',
+      component: () => import('@/views/SignUpPage.vue'),
+    },
   ]
 });
