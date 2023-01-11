@@ -1,12 +1,12 @@
 <template>
   <div>
     <div>
-      <form @submit.prevent="submitForm" class="form">
+      <form @submit.prevent="submitForm">
         <div>
           <label for="userId">id:</label>
           <input id="userId" type="text" v-model="userId" />
-          <p class="validation-text">
-            <span class="warning" v-if="!userId">
+          <p>
+            <span v-if="!userId">
               아이디를 입력해주세요
             </span>
           </p>
@@ -15,11 +15,7 @@
           <label for="password">pw:</label>
           <input id="password" type="text" v-model="password" />
         </div>
-        <button
-          type="submit"
-          class="btn"
-          :class="!userId || !password ? 'disabled' : null"
-        >
+        <button type="submit">
         로그인
         </button>                
       </form>      
@@ -28,6 +24,8 @@
 </template>
 
 <script>
+import {loginUser} from '@/api/index';
+
 export default {
   data(){
     return{
@@ -42,7 +40,8 @@ export default {
           userId: this.userId,
           password: this.password,
         }
-        await this.$store.dispatch('LOGIN', userData);
+        const {data} = await loginUser(userData);
+        console.log(data);
         
       }catch(error){
         console.error(error);
