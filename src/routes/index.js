@@ -19,5 +19,10 @@ export default new VueRouter({
       path: '/signup',
       component: () => import('@/views/SignUpPage.vue'),
     },
+    {
+      path: '/calendar',
+      component: () => import('@/views/CalendarView.vue'),
+      
+    },
   ]
 });

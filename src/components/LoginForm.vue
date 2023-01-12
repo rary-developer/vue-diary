@@ -15,7 +15,7 @@
           <label for="password">pw:</label>
           <input id="password" type="text" v-model="password" />
         </div>
-        <button type="submit">
+        <button type="submit" :disabled="!password || !userId">
         로그인
         </button>                
       </form>      
@@ -42,7 +42,9 @@ export default {
         }
         const {data} = await loginUser(userData);
         console.log(data);
-        
+        this.$store.commit('setUserId', data.userId);
+        this.$router.push('/calendar')
+
       }catch(error){
         console.error(error);
       }finally{

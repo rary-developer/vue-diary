@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL
+  baseURL: 'http://121.161.237.50:50005',
+  headers: {
+    Accept:"application/json", "Content-Type":"application/json"
+  },
+  withCredentials:true
 });
 
 //회원가입
