@@ -1,21 +1,26 @@
 <template>
-  <div>
-    <div>
-      <form @submit.prevent="submitForm">
+  <div class="contents">
+    <div class="form-wrapper form-wrapper-sm">
+      <form @submit.prevent="submitForm" class="form">
         <div>
           <label for="userId">id:</label>
           <input id="userId" type="text" v-model="userId" />
-          <p>
-            <span v-if="!userId">
+          <p class="validation-text">
+            <span v-if="!userId" class="warning">
               아이디를 입력해주세요
             </span>
           </p>
         </div>
         <div>
           <label for="password">pw:</label>
-          <input id="password" type="text" v-model="password" />
+          <input id="password" type="password" v-model="password" />
         </div>
-        <button type="submit" :disabled="!password || !userId">
+        <button 
+          type="submit" 
+          :disabled="!password || !userId" 
+          class="btn"
+          :class="!userId || !password ? 'disabled' : null"
+        >
         로그인
         </button>                
       </form>      
@@ -24,7 +29,8 @@
 </template>
 
 <script>
-import {loginUser} from '@/api/index';
+//import {loginUser} from '@/api/index';
+import UserSvc from '@/service/UserSvc';
 
 export default {
   data(){
@@ -40,10 +46,14 @@ export default {
           userId: this.userId,
           password: this.password,
         }
-        const {data} = await loginUser(userData);
-        console.log(data);
-        this.$store.commit('setUserId', data.userId);
-        this.$router.push('/calendar')
+        //const {data} = await loginUser(userData);
+        //console.log(data);        
+        //this.$router.push('/calendar')
+        const response = await UserSvc.signIn(userData);
+        if(response.data.code === 200){          
+          this.$store.commit('setUserData', response.data);
+          this.$router.push('/calendar')
+        }
 
       }catch(error){
         console.error(error);

@@ -1,18 +1,16 @@
 <template>
   <header>
-    <div>
-      <router-link to="/" class="logo">
-        {{ $store.state.userId }}
-      </router-link>
+    <div>      
     </div>
     <div class="navigations">
       <template v-if="isUserLogin">
+        <span v-if="isUserLogin" >{{ $store.state.userId }}</span>
         <a href="javascript:;" @click="logoutUser" class="logout-button">
-          Logout
+          로그아웃
         </a> 
       </template> 
       <template v-else>
-        <router-link to="/login">로그인</router-link> |
+        <router-link to="/login">로그인</router-link>
         <router-link to="/signup">회원가입</router-link>
       </template>
     </div>      
@@ -23,11 +21,14 @@
 
 export default{
   computed:{
-    isUserLogin(){
+    isUserLogin(){            
       return this.$store.getters.isLogin;
-    },
-    logoutUser(){
-      return this.$store.commit('clearUserId');
+    },    
+  },
+  methods: {
+    logoutUser() {
+      this.$store.commit('clearUserData');
+      this.$router.push('/login');
     }
   }
 }
@@ -43,7 +44,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #927dfc;
+  background-color: #679fe6;
   z-index: 2;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
 }

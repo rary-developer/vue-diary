@@ -6,18 +6,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userId: '',
+    userNo: '',
   },
   getters: {
     isLogin(state){
-      return state.userId !== ''
-    }
+      return state.userId !== '';
+    },
   },
   mutations: {
-    setUserId(state, userId){
-      state.userId = userId;
+    setUserData(state, data){            
+      state.userId = data.data.userData.userId;
+      state.userNo = data.data.userData.userNo;
     },
-    clearUserId(state){
+    clearUserData(state){
       state.userId = '';
+      state.userNo = '';
     }
   },
   actions: {
