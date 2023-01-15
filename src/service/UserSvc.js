@@ -14,6 +14,20 @@ class userSvc extends Service{
             return response;
           });
   }
+  fetchDiaryList(param={}){
+    return this.get('/api/dairy/list', param)
+      .then(response => {
+        console.log(response);
+        return response;
+      })
+  }
+  fetchDiaryOne(param={}){
+    return this.get(`/api/diary/${param.diaryNo}`)
+      .then(response => {
+        console.log(response);
+        return response;
+      })
+  }
 }
 
 export default new userSvc()

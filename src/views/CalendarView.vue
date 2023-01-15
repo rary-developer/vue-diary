@@ -21,6 +21,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from '@/utils/event-utils'
+//import UserSvc from '@/service/UserSvc';
 
 export default {
 
@@ -37,9 +38,9 @@ export default {
           interactionPlugin // needed for dateClick
         ],
         headerToolbar: {
-          left: 'prev,next today',
+          left: 'prev',
           center: 'title',
-          right: ''
+          right: 'next'
         },
         locale:"ko",
         initialView: 'dayGridMonth',
@@ -63,10 +64,16 @@ export default {
   },
 
   methods: {
+    // async fetchDiary(){
+    //   const param = {
 
-    handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
-    },
+    //   }
+    //   const response = await UserSvc.fetchDiaryList();
+    // }
+    // ,
+    // handleWeekendsToggle() {
+    //   this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
+    // },
 
     handleDateSelect(selectInfo) {
       let title = prompt('Please enter a new title for your event')
