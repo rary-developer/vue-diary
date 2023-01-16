@@ -12,6 +12,7 @@
           <i>{{ arg.event.title }}</i>
         </template>
       </FullCalendar>
+      <ModalView v-if="showModal" @close="choModal = false"></ModalView>
     </div>
   </div>
 </template>
@@ -23,6 +24,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS } from '@/utils/event-utils'
+import ModalView from '@/components/ModalView.vue'
 import UserSvc from '@/service/UserSvc';
 
 export default {
@@ -37,7 +39,8 @@ export default {
     
   },
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar, // make the <FullCalendar> tag available
+    ModalView,
   },
 
   data: function() {
@@ -46,6 +49,7 @@ export default {
       userNo:this.$store.getters.getUserNo,
       year: '',
       month: '',
+      showModal:true,
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -100,6 +104,7 @@ export default {
       let calendarApi = selectInfo.view.calendar
 
       calendarApi.unselect() // clear date selection
+      
       console.log(selectInfo);
       // calendarApi.addEvent({
       //   userNo: this.userNo,        
