@@ -12,6 +12,9 @@ export default new Vuex.Store({
     isLogin(state){
       return state.userId !== '';
     },
+    getUserNo(state){
+      return state.userNo;
+    }
   },
   mutations: {
     setUserData(state, data){            

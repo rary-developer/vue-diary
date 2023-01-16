@@ -15,9 +15,8 @@ class userSvc extends Service{
           });
   }
   fetchDiaryList(param={}){
-    return this.get('/api/dairy/list', param)
-      .then(response => {
-        console.log(response);
+    return this.get('/api/diary/list', param)
+      .then(response => {        
         return response;
       })
   }

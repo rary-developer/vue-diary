@@ -2,6 +2,8 @@
   <div class='demo-app'>    
     <div class='demo-app-main'>
       <FullCalendar
+        id="calendar"
+        ref="calendar"
         class='demo-app-calendar'
         :options='calendarOptions'
       >
@@ -20,17 +22,30 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from '@/utils/event-utils'
-//import UserSvc from '@/service/UserSvc';
+import { INITIAL_EVENTS } from '@/utils/event-utils'
+import UserSvc from '@/service/UserSvc';
 
 export default {
+  created(){    
+    const date = new Date();
+    let year = date.getFullYear().toString();
+    let month = date.getMonth()+1;    
 
+    month = month > 9 ? month : `0${month}`;
+    
+    this.fetchDiary(year,month);
+    
+  },
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
 
   data: function() {
     return {
+      data: [],
+      userNo:this.$store.getters.getUserNo,
+      year: '',
+      month: '',
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -63,33 +78,36 @@ export default {
     }
   },
 
-  methods: {
-    // async fetchDiary(){
-    //   const param = {
-
-    //   }
-    //   const response = await UserSvc.fetchDiaryList();
-    // }
-    // ,
+  methods: {    
+    async fetchDiary(year, month){      
+      const param = {
+        year : year,
+        month : month,
+        userNo : this.userNo,
+      }
+      
+      const response = await UserSvc.fetchDiaryList(param);
+      console.log(response.data.data);
+      this.data.push(response.data.data);
+    }
+    ,
     // handleWeekendsToggle() {
     //   this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     // },
 
     handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
+      //let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
 
       calendarApi.unselect() // clear date selection
-
-      if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        })
-      }
+      console.log(selectInfo);
+      // calendarApi.addEvent({
+      //   userNo: this.userNo,        
+      //   start: selectInfo.startStr,        
+      //   end: selectInfo.endStr,
+      //   allDay: selectInfo.allDay
+      // })
+      
     },
 
     handleEventClick(clickInfo) {
