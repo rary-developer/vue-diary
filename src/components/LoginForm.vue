@@ -29,7 +29,7 @@
 </template>
 
 <script>
-//import {loginUser} from '@/api/index';
+import {saveUserNoToCookie,saveUserIdToCookie} from '@/utils/cookies';
 import UserSvc from '@/service/UserSvc';
 
 export default {
@@ -51,7 +51,9 @@ export default {
         //this.$router.push('/calendar')
         const response = await UserSvc.signIn(userData);
         if(response.data.code === 200){          
-          this.$store.commit('setUserData', response.data);
+          this.$store.commit('setUserData', response.data);          
+          saveUserNoToCookie(response.data.data.userData);
+          saveUserIdToCookie(response.data.data.userData);
           this.$router.push('/calendar')
         }
 

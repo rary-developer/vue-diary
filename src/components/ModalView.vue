@@ -1,10 +1,17 @@
 <template>
-  <div class="modal">
-    <div class="overlay" @click="$emi('close-modal')"></div>
-    <div class="modal-card">
-
-    </div>
-  </div>
+	<AppModal v-model="show" title="게시글">
+		<template #default>
+			<div class="row g-12">
+				<div class="col-3 text-muted">제목</div>
+				<div class="col-9">{{ title }}</div>								
+			</div>
+		</template>
+		<template #actions>
+			<button type="button" class="btn btn-secondary" @click="closeModal">
+				닫기
+			</button>
+		</template>
+	</AppModal>
 </template>
 
 <script>

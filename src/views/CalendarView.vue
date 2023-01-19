@@ -6,13 +6,14 @@
         ref="calendar"
         class='demo-app-calendar'
         :options='calendarOptions'
+        :events="events"
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
         </template>
       </FullCalendar>
-      <ModalView v-if="showModal" @close="choModal = false"></ModalView>
+      <!-- <ModalView v-if="showModal" @close="choModal = false"></ModalView> -->
     </div>
   </div>
 </template>
@@ -23,8 +24,8 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS } from '@/utils/event-utils'
-import ModalView from '@/components/ModalView.vue'
+//import { INITIAL_EVENTS } from '@/utils/event-utils'
+//import ModalView from '@/components/ModalView.vue'
 import UserSvc from '@/service/UserSvc';
 
 export default {
@@ -39,16 +40,15 @@ export default {
     
   },
   components: {
-    FullCalendar, // make the <FullCalendar> tag available
-    ModalView,
+    FullCalendar, // make the <FullCalendar> tag available    
   },
 
   data: function() {
-    return {
-      data: [],
-      userNo:this.$store.getters.getUserNo,
+    return {      
+      userNo:'',
       year: '',
       month: '',
+      events: [],
       showModal:true,
       calendarOptions: {
         plugins: [
@@ -62,16 +62,15 @@ export default {
           right: 'next'
         },
         locale:"ko",
-        initialView: 'dayGridMonth',
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        initialView: 'dayGridMonth',        
         editable: true,
         selectable: true,
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
-        select: this.handleDateSelect,
-        eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        // select: this.handleDateSelect,
+        // eventClick: this.handleEventClick,
+        // eventsSet: this.handleEvents
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
@@ -87,12 +86,15 @@ export default {
       const param = {
         year : year,
         month : month,
-        userNo : this.userNo,
+        userNo : this.$store.getters.getUserNo,
       }
       
       const response = await UserSvc.fetchDiaryList(param);
-      console.log(response.data.data);
-      this.data.push(response.data.data);
+      //console.log(response.data.data);
+      //this.data.push(response.data.data);
+      //this.$store.commit('setDiaryList', response.data.data);      
+      this.events.push(response.data.data);
+      console.log(this.events);
     }
     ,
     // handleWeekendsToggle() {

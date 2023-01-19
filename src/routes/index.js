@@ -20,6 +20,10 @@ export default new VueRouter({
       component: () => import('@/views/SignUpPage.vue'),
     },
     {
+      path: '/modal',
+      component: () => import('@/components/ModalView.vue'),
+    },
+    {
       path: '/calendar',
       component: () => import('@/views/CalendarView.vue'),
       
