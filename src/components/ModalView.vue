@@ -1,13 +1,13 @@
 <template>
-	<AppModal v-model="show" title="게시글">
-		<template #default>
+	<AppModal title="게시글">
+		<template>
 			<div class="row g-12">
-				<div class="col-3 text-muted">제목</div>
-				<div class="col-9">{{ title }}</div>								
+				<div class="col-3 text-muted"></div>
+				<div class="col-9"></div>								
 			</div>
 		</template>
-		<template #actions>
-			<button type="button" class="btn btn-secondary" @click="closeModal">
+		<template>
+			<button type="button" class="btn btn-secondary">
 				닫기
 			</button>
 		</template>

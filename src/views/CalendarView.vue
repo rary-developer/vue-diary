@@ -5,8 +5,7 @@
         id="calendar"
         ref="calendar"
         class='demo-app-calendar'
-        :options='calendarOptions'
-        :events="events"
+        :options='calendarOptions'        
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.timeText }}</b>
@@ -47,9 +46,7 @@ export default {
     return {      
       userNo:'',
       year: '',
-      month: '',
-      events: [],
-      showModal:true,
+      month: '',            
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -61,6 +58,9 @@ export default {
           center: 'title',
           right: 'next'
         },
+        events: [
+          
+        ],
         locale:"ko",
         initialView: 'dayGridMonth',        
         editable: true,
@@ -68,7 +68,7 @@ export default {
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
-        // select: this.handleDateSelect,
+        select: this.handleDateSelect,
         // eventClick: this.handleEventClick,
         // eventsSet: this.handleEvents
         /* you can update a remote database when these fire:
@@ -89,12 +89,16 @@ export default {
         userNo : this.$store.getters.getUserNo,
       }
       
-      const response = await UserSvc.fetchDiaryList(param);
-      //console.log(response.data.data);
+      const response = await UserSvc.fetchDiaryList(param);      
+      console.log(response.data.data);
+      console.log(this.calendarOptions.events),
+      this.calendarOptions.events = [
+        ...this.calendarOptions.events,response.data.data
+      ]
       //this.data.push(response.data.data);
       //this.$store.commit('setDiaryList', response.data.data);      
-      this.events.push(response.data.data);
-      console.log(this.events);
+      // this.events.push(response.data.data);
+      // console.log(this.events);
     }
     ,
     // handleWeekendsToggle() {
