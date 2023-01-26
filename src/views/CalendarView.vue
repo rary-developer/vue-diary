@@ -14,7 +14,15 @@
       </FullCalendar>
       <!-- <ModalView v-if="showModal" @close="choModal = false"></ModalView> -->
     </div>
-  </div>
+    
+    
+    <ModalView v-if="showModal" @close-modal="showModal=false">
+      <template slot="footer">
+        
+      </template>
+    </ModalView>
+    
+  </div>  
 </template>
 
 
@@ -24,8 +32,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 //import { INITIAL_EVENTS } from '@/utils/event-utils'
-//import ModalView from '@/components/ModalView.vue'
 import UserSvc from '@/service/UserSvc';
+import ModalView from '../components/ModalView.vue';
 
 export default {
   created(){    
@@ -40,13 +48,15 @@ export default {
   },
   components: {
     FullCalendar, // make the <FullCalendar> tag available    
+    ModalView, 
   },
 
   data: function() {
     return {      
       userNo:'',
       year: '',
-      month: '',            
+      month: '', 
+      showModal: false,           
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -58,9 +68,7 @@ export default {
           center: 'title',
           right: 'next'
         },
-        events: [
-          
-        ],
+        events: [],
         locale:"ko",
         initialView: 'dayGridMonth',        
         editable: true,
@@ -69,7 +77,7 @@ export default {
         dayMaxEvents: true,
         weekends: true,
         select: this.handleDateSelect,
-        // eventClick: this.handleEventClick,
+        eventClick: this.handleEventClick,
         // eventsSet: this.handleEvents
         /* you can update a remote database when these fire:
         eventAdd:
@@ -89,21 +97,25 @@ export default {
         userNo : this.$store.getters.getUserNo,
       }
       
-      const response = await UserSvc.fetchDiaryList(param);      
-      console.log(response.data.data);
-      console.log(this.calendarOptions.events),
-      this.calendarOptions.events = [
-        ...this.calendarOptions.events,response.data.data
-      ]
-      //this.data.push(response.data.data);
-      //this.$store.commit('setDiaryList', response.data.data);      
-      // this.events.push(response.data.data);
-      // console.log(this.events);
+      const response = await UserSvc.fetchDiaryList(param);            
+      var eventData = response.data.data;            
+      this.postData(eventData);                  
+            
     }
     ,
-    // handleWeekendsToggle() {
-    //   this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
-    // },
+
+    postData(eventData){
+      for(var i=0; i<eventData.length; i++){
+        eventData[i].title = eventData[i].contents;
+        eventData[i].start = eventData[i].regDate;
+        eventData[i].id = eventData[i].diaryNo;
+        //해당 달 데이터 추가
+        this.calendarOptions.events = [
+          ...this.calendarOptions.events,eventData[i]
+        ]
+      }     
+      
+    },
 
     handleDateSelect(selectInfo) {
       //let title = prompt('Please enter a new title for your event')
@@ -112,6 +124,7 @@ export default {
       calendarApi.unselect() // clear date selection
       
       console.log(selectInfo);
+      this.showModal = true;
       // calendarApi.addEvent({
       //   userNo: this.userNo,        
       //   start: selectInfo.startStr,        
@@ -122,9 +135,10 @@ export default {
     },
 
     handleEventClick(clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
+      console.log(clickInfo);
+      // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      //   clickInfo.event.remove()
+      // }
     },
 
     handleEvents(events) {

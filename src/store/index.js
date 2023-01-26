@@ -10,7 +10,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userId: getUserIdFromCookie() ||'',
+    userId: getUserIdFromCookie() || '',
     userNo: getUserNoFromCookie() || '',
     diaryList: [],
   },

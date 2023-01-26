@@ -1,38 +1,55 @@
-<template>
-	<AppModal title="게시글">
-		<template>
-			<div class="row g-12">
-				<div class="col-3 text-muted"></div>
-				<div class="col-9"></div>								
-			</div>
-		</template>
-		<template>
-			<button type="button" class="btn btn-secondary">
-				닫기
-			</button>
-		</template>
-	</AppModal>
+<template>			
+	<transition name="modal">
+		<div class="modal modal-overlay">			
+			<div class="modal-window" @click.self="$emit('close-modal')">
+				<h2>Diary Info</h2>
+				<div class="modal-card">
+					<input type="text">
+				</div>
+				<footer class="modal-footer">
+					<slot name="footer">
+						<button @click="$emit('close-modal')">닫기</button>
+					</slot>
+				</footer>
+			</div>									
+		</div>
+	</transition>
 </template>
 
 <script>
 export default {
+	created(){
 
+	}
 }
 </script>
 
-<style>
-.overlay{
-  opacity: 0.5;  
+<style coped>
+.modal-overlay{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	z-index: 30;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	
+}
+.modal-window{
+	background: #fff;
+  border-radius: 4px;
+  overflow: hidden;	
+	width: 50%;
 }
 .modal-card{
-  position:relative;
-  max-width: 80%;
-  margin:auto;
-  margin-top: 30px;
-  padding: 20px;
-  background-color: white;
-  min-height: 500px;
-  z-index: 10;
-  opacity: 1;
+	padding: 10px 20px;
+}
+.modal-footer{
+	background: #ccc;
+  padding: 10px;
+  text-align: right;	
 }
 </style>
