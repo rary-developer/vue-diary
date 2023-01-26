@@ -6,11 +6,11 @@
 				<div class="modal-card">
 					<input type="text">
 				</div>
-				<footer class="modal-footer">
+				<!-- <footer class="modal-footer">
 					<slot name="footer">
 						<button @click="$emit('close-modal')">닫기</button>
 					</slot>
-				</footer>
+				</footer> -->
 			</div>									
 		</div>
 	</transition>
@@ -43,6 +43,7 @@ export default {
   border-radius: 4px;
   overflow: hidden;	
 	width: 50%;
+	height: 50%;
 }
 .modal-card{
 	padding: 10px 20px;
