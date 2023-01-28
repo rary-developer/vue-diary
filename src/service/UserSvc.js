@@ -22,8 +22,13 @@ class userSvc extends Service{
   }
   fetchDiaryOne(param={}){
     return this.get(`/api/diary/${param.diaryNo}`)
-      .then(response => {
-        console.log(response);
+      .then(response => {        
+        return response;
+      })
+  }
+  deleteDiary(param={}){
+    return this.delete(`/api/diary/remove/${param.diaryNo}`)
+      .then(response => {        
         return response;
       })
   }

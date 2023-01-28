@@ -16,7 +16,7 @@
     </div>
     
     
-    <ModalView v-if="showModal" @close-modal="showModal=false">
+    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @close-modal="showModal=false">
       <template slot="footer">
         
       </template>
@@ -57,6 +57,7 @@ export default {
       year: '',
       month: '', 
       showModal: false,           
+      dayEventData : [],
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -121,10 +122,20 @@ export default {
       //let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
 
-      calendarApi.unselect() // clear date selection
+      calendarApi.unselect() // clear date selection                  
+
+      this.dayEventData = [];
+
+      this.calendarOptions.events.map((i)=>{                
+        if(selectInfo.startStr == i.start){
+          this.dayEventData.push(i);
+        }
+      })      
       
-      console.log(selectInfo);
+
       this.showModal = true;
+      
+      
       // calendarApi.addEvent({
       //   userNo: this.userNo,        
       //   start: selectInfo.startStr,        
