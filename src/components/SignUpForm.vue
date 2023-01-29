@@ -44,7 +44,10 @@ export default {
           password: this.password,
         }
         const response = await UserSvc.signUp(userData);
-        if(response.data.code === 200){
+        if(response == -1){
+          alert("이미 존재하는 id입니다.");
+          return;
+        }else if(response.data.code === 200){
           alert("회원가입이 성공했습니다.");
           this.$router.push({path:"/login"});
         }                

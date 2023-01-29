@@ -3,7 +3,7 @@ import Service from "@/service/Service";
 class userSvc extends Service{
   signIn(param={}){
     return this.get('/api/user/in', param)
-      .then(response => {
+      .then(response => {                
         return response;
       })
   }

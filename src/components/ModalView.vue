@@ -44,6 +44,7 @@ export default {
 			const response = await UserSvc.deleteDiary(param);
 			if(response.data.code == "1"){
 				alert(response.data.msg);
+				//dayEventData 삭제
 			}
 		}
 	}

@@ -16,7 +16,7 @@
     </div>
     
     
-    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @close-modal="showModal=false">
+    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @close-modal="fn_closeModal()">
       <template slot="footer">
         
       </template>
@@ -117,7 +117,11 @@ export default {
       }     
       
     },
-
+    fn_closeModal(){
+      this.showModal=false;
+      location.reload();
+    }
+    ,
     handleDateSelect(selectInfo) {
       //let title = prompt('Please enter a new title for your event')
       let calendarApi = selectInfo.view.calendar
