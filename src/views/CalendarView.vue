@@ -16,7 +16,7 @@
     </div>
     
     
-    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @delete-item=fn_deleteItem(id) @close-modal="fn_closeModal()">
+    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @delete-item=fn_deleteItem @close-modal="fn_closeModal">
       <template slot="footer">
         
       </template>
@@ -129,7 +129,7 @@ export default {
       calendarApi.unselect() // clear date selection                  
 
       this.dayEventData = [];
-      console.log(selectInfo);
+      
       this.inputDayEventData(selectInfo);      
       
       this.showModal = true;      
@@ -143,8 +143,7 @@ export default {
       })
     },    
     
-    async fn_deleteItem(id){
-			console.log(id);
+    async fn_deleteItem(id){			
 			const param = {
 				diaryNo: id,
 			}
@@ -152,13 +151,15 @@ export default {
 			if(response.data.code == "1"){
 				alert(response.data.msg);
 				//dayEventData 삭제 props데이터 수정
-				this.dayEventData = this.dayEventData.filter((item) => item.id != id);
+			this.dayEventData = this.dayEventData.filter(
+        (item)=> (item.id != id)
+      );
+      
 				
 			}
 		},
 
-    handleEventClick(clickInfo) {
-      console.log(clickInfo);
+    handleEventClick() {      
       // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       //   clickInfo.event.remove()
       // }

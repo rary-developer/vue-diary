@@ -5,9 +5,9 @@
 				<h2>Diary Info</h2>
 				<div class="modal-card" v-for="item in dayEventData" :key="item.id">					
 					<div :bind="item.id">						
-						<input type="text" :value="item.contents" :disabled="item.id" />
+						<input type="text" :bind="item.contents" :value="item.contents"/>
 						<button :show="item.id" @click="enableEdit(item.id)">수정</button>
-						<button :show="item.id" @click="$emit('deleteItem', item.id)">삭제</button>
+						<button :show="item.id" @click="$emit('delete-item', item.id)">삭제</button>
 						<!-- <button :show="item.id" @click="enableEdit(item.id)">취소</button> -->
 					</div>
 				</div>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+//import UserSvc from '@/service/UserSvc';
 
 export default {
 	//name: 'dayEventData',
@@ -31,9 +32,18 @@ export default {
 
 	},
 	methods: {
-		enableEdit(id){
+		enableEdit(id){			
 			console.log(id);
-			console.log(this.dayEventData);
+			var data = this.dayEventData.filter((item)=> item.id==id)[0];
+			console.log(data);
+			const param = {
+				diaryNo: data.diaryNo,
+				regDate: data.start,
+				content: data.content,
+			}
+			console.log(param);
+			//const response = await UserSvc.saveDiary(param);
+			//console.log(response);
 		},		
 	}
 }
