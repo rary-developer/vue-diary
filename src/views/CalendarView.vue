@@ -16,7 +16,7 @@
     </div>
     
     
-    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @close-modal="fn_closeModal()">
+    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @delete-item=fn_deleteItem(id) @close-modal="fn_closeModal()">
       <template slot="footer">
         
       </template>
@@ -68,7 +68,7 @@ export default {
           left: 'prev',
           center: 'title',
           right: 'next'
-        },
+        },        
         events: [],
         locale:"ko",
         initialView: 'dayGridMonth',        
@@ -101,7 +101,7 @@ export default {
       const response = await UserSvc.fetchDiaryList(param);            
       var eventData = response.data.data;            
       this.postData(eventData);                  
-            
+      
     }
     ,
 
@@ -124,30 +124,38 @@ export default {
     ,
     handleDateSelect(selectInfo) {
       //let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
+      let calendarApi = selectInfo.view.calendar;
 
       calendarApi.unselect() // clear date selection                  
 
       this.dayEventData = [];
+      console.log(selectInfo);
+      this.inputDayEventData(selectInfo);      
+      
+      this.showModal = true;      
+    },
 
+    inputDayEventData(selectInfo){      
       this.calendarOptions.events.map((i)=>{                
         if(selectInfo.startStr == i.start){
           this.dayEventData.push(i);
         }
-      })      
-      
-
-      this.showModal = true;
-      
-      
-      // calendarApi.addEvent({
-      //   userNo: this.userNo,        
-      //   start: selectInfo.startStr,        
-      //   end: selectInfo.endStr,
-      //   allDay: selectInfo.allDay
-      // })
-      
-    },
+      })
+    },    
+    
+    async fn_deleteItem(id){
+			console.log(id);
+			const param = {
+				diaryNo: id,
+			}
+			const response = await UserSvc.deleteDiary(param);
+			if(response.data.code == "1"){
+				alert(response.data.msg);
+				//dayEventData 삭제 props데이터 수정
+				this.dayEventData = this.dayEventData.filter((item) => item.id != id);
+				
+			}
+		},
 
     handleEventClick(clickInfo) {
       console.log(clickInfo);

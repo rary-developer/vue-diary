@@ -7,7 +7,7 @@
 					<div :bind="item.id">						
 						<input type="text" :value="item.contents" :disabled="item.id" />
 						<button :show="item.id" @click="enableEdit(item.id)">수정</button>
-						<button :show="item.id" @click="deleteItem(item.id)">삭제</button>
+						<button :show="item.id" @click="$emit('deleteItem', item.id)">삭제</button>
 						<!-- <button :show="item.id" @click="enableEdit(item.id)">취소</button> -->
 					</div>
 				</div>
@@ -23,10 +23,9 @@
 </template>
 
 <script>
-import UserSvc from '@/service/UserSvc';
 
 export default {
-	name: 'dayEventData',
+	//name: 'dayEventData',
 	props: ['dayEventData'],
 	created(){
 
@@ -34,19 +33,8 @@ export default {
 	methods: {
 		enableEdit(id){
 			console.log(id);
-
-		},
-		async deleteItem(id){
-			console.log(id);
-			const param = {
-				diaryNo: id,
-			}
-			const response = await UserSvc.deleteDiary(param);
-			if(response.data.code == "1"){
-				alert(response.data.msg);
-				//dayEventData 삭제
-			}
-		}
+			console.log(this.dayEventData);
+		},		
 	}
 }
 </script>
