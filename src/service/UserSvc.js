@@ -33,7 +33,7 @@ class userSvc extends Service{
       })
   }    
   saveDiary(param={}){
-    return this.post(`/api/diary/save/${param}`)
+    return this.post('/api/diary/save/', param)
       .then(response => {
         return response;
       })

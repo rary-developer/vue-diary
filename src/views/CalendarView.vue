@@ -16,7 +16,12 @@
     </div>
     
     
-    <ModalView v-if="showModal" v-bind:dayEventData="dayEventData" @delete-item=fn_deleteItem @close-modal="fn_closeModal">
+    <ModalView v-if="showModal" 
+      v-bind:dayEventData="dayEventData" 
+      @delete-item="fn_deleteItem"
+      @edit-item="fn_editItem"
+      @close-modal="fn_closeModal"       
+    >
       <template slot="footer">
         
       </template>
@@ -151,14 +156,34 @@ export default {
 			if(response.data.code == "1"){
 				alert(response.data.msg);
 				//dayEventData 삭제 props데이터 수정
-			this.dayEventData = this.dayEventData.filter(
-        (item)=> (item.id != id)
-      );
-      
-				
+        this.dayEventData = this.dayEventData.filter(
+          (item)=> (item.id != id)
+        );
 			}
 		},
 
+    async fn_editItem(id,contents){
+      var req = this.dayEventData.filter((item)=> item.id==id)[0];
+			console.log(id);
+      console.log(contents);
+      const param = {
+				diaryNo: req.diaryNo,
+				regDate: req.start,
+				contents: req.contents,
+				userNo: this.$store.getters.getUserNo,
+			}			
+      
+			const { data } = await UserSvc.saveDiary(param);
+			if(data.code == 1){
+				alert(data.msg);
+				var idx = this.dayEventData.findIndex((item) => item.id == id);        
+        this.dayEventData[idx].contents = contents;
+        return;
+			}else{
+        alert(data.msg);
+        return;
+      }						
+    },
     handleEventClick() {      
       // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       //   clickInfo.event.remove()

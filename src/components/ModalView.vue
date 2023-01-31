@@ -1,12 +1,12 @@
 <template>			
 	<transition name="modal">
 		<div class="modal modal-overlay">			
-			<div class="modal-window" @click.self="$emit('close-modal')">
-				<h2>Diary Info</h2>
+			<div class="modal-window">
+				<h2>Diary Info</h2>				
 				<div class="modal-card" v-for="item in dayEventData" :key="item.id">					
 					<div :bind="item.id">						
-						<input type="text" :bind="item.contents" :value="item.contents"/>
-						<button :show="item.id" @click="enableEdit(item.id)">수정</button>
+						<input type="text" v-modal:item.contents :value="item.contents" @change="onDataChanged"/>
+						<button :show="item.id" @click="$emit('edit-item',item.id, item.contents)">수정</button>
 						<button :show="item.id" @click="$emit('delete-item', item.id)">삭제</button>
 						<!-- <button :show="item.id" @click="enableEdit(item.id)">취소</button> -->
 					</div>
@@ -26,26 +26,19 @@
 //import UserSvc from '@/service/UserSvc';
 
 export default {
-	//name: 'dayEventData',
+	name: 'dayEventData',
 	props: ['dayEventData'],
+	// data(){
+	// return{
+	// eventData : this.dayEventData
+	// }
+	// },	
 	created(){
 
-	},
+	},	
 	methods: {
-		enableEdit(id){			
-			console.log(id);
-			var data = this.dayEventData.filter((item)=> item.id==id)[0];
-			console.log(data);
-			const param = {
-				diaryNo: data.diaryNo,
-				regDate: data.start,
-				content: data.content,
-			}
-			console.log(param);
-			//const response = await UserSvc.saveDiary(param);
-			//console.log(response);
-		},		
-	}
+
+	},
 }
 </script>
 
