@@ -20,7 +20,10 @@
       v-bind:dayEventData="dayEventData" 
       @delete-item="fn_deleteItem"
       @edit-item="fn_editItem"
+      @save-item="fn_saveItem"
+      @add-item="fn_addItem"
       @close-modal="fn_closeModal"       
+      @change-data="fn_change_data"      
     >
       <template slot="footer">
         
@@ -114,7 +117,7 @@ export default {
       for(var i=0; i<eventData.length; i++){
         eventData[i].title = eventData[i].contents;
         eventData[i].start = eventData[i].regDate;
-        eventData[i].id = eventData[i].diaryNo;
+        eventData[i].id = Math.random();
         //해당 달 데이터 추가
         this.calendarOptions.events = [
           ...this.calendarOptions.events,eventData[i]
@@ -122,6 +125,11 @@ export default {
       }     
       
     },
+    fn_change_data(id, contents){            
+      var idx = this.dayEventData.findIndex((item) => item.id == id);
+      this.dayEventData[idx].contents = contents;
+    },
+
     fn_closeModal(){
       this.showModal=false;
       location.reload();
@@ -148,24 +156,52 @@ export default {
       })
     },    
     
-    async fn_deleteItem(id){			
+    async fn_deleteItem(diaryNo){			
 			const param = {
-				diaryNo: id,
+				diaryNo: diaryNo,
 			}
 			const response = await UserSvc.deleteDiary(param);
 			if(response.data.code == "1"){
 				alert(response.data.msg);
 				//dayEventData 삭제 props데이터 수정
         this.dayEventData = this.dayEventData.filter(
-          (item)=> (item.id != id)
+          (item)=> (item.diaryNo != diaryNo)
         );
 			}
 		},
-
-    async fn_editItem(id,contents){
+    fn_addItem(){
+      var param = {
+        contents: "",
+        id: Math.random(),
+        regDate: this.dayEventData[0].regDate,
+        diaryNo: "",
+        start: this.dayEventData[0].regDate,
+        title: "",
+        userNo: this.$store.getters.getUserNo,
+      };      
+      this.dayEventData.push(param);
+    }
+    ,
+    async fn_saveItem(id){      
       var req = this.dayEventData.filter((item)=> item.id==id)[0];
-			console.log(id);
-      console.log(contents);
+      const param = {
+        regDate: req.start,
+        contents: req.contents,
+        userNo : this.$store.getters.getUserNo,
+      }
+
+      const {data} = await UserSvc.saveDiary(param);
+      if(data.code == 1){
+        alert(data.msg);
+        return;
+      }else{
+        alert(data.msg);
+        return;
+      }
+    }
+    ,
+    async fn_editItem(diaryNo,contents){
+      var req = this.dayEventData.filter((item)=> item.diaryNo==diaryNo)[0];
       const param = {
 				diaryNo: req.diaryNo,
 				regDate: req.start,
@@ -176,7 +212,7 @@ export default {
 			const { data } = await UserSvc.saveDiary(param);
 			if(data.code == 1){
 				alert(data.msg);
-				var idx = this.dayEventData.findIndex((item) => item.id == id);        
+				var idx = this.dayEventData.findIndex((item) => item.diaryNo == diaryNo);        
         this.dayEventData[idx].contents = contents;
         return;
 			}else{

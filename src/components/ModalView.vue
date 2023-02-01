@@ -2,12 +2,14 @@
 	<transition name="modal">
 		<div class="modal modal-overlay">			
 			<div class="modal-window">
-				<h2>Diary Info</h2>				
-				<div class="modal-card" v-for="item in dayEventData" :key="item.id">					
-					<div :bind="item.id">						
-						<input type="text" v-modal:item.contents :value="item.contents" @change="onDataChanged"/>
-						<button :show="item.id" @click="$emit('edit-item',item.id, item.contents)">수정</button>
-						<button :show="item.id" @click="$emit('delete-item', item.id)">삭제</button>
+				<h2>Diary Info</h2>
+				<button @click="$emit('add-item')">추가</button>
+				<div class="modal-card" v-for="item in dayEventData" :key="item.id">
+					<div :bind="item.id">												
+						<input type="text" v-modal:item.contents :value="item.contents" @change="$emit('change-data', item.id, $event.target.value)"/>
+						<button v-if="item.diaryNo !== ''" @click="$emit('edit-item',item.diaryNo, item.contents)">수정</button>
+						<button v-if="item.diaryNo !== ''" @click="$emit('delete-item', item.DiaryNo)">삭제</button>
+						<button v-if="item.diaryNo == ''" @click="$emit('save-item', item.id)">저장</button>
 						<!-- <button :show="item.id" @click="enableEdit(item.id)">취소</button> -->
 					</div>
 				</div>
