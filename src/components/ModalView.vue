@@ -6,10 +6,22 @@
 				<button @click="$emit('add-item')">추가</button>
 				<div class="modal-card" v-for="item in dayEventData" :key="item.id">
 					<div :bind="item.id">												
-						<input type="text" v-modal:item.contents :value="item.contents" @change="$emit('change-data', item.id, $event.target.value)"/>
-						<button v-if="item.diaryNo !== ''" @click="$emit('edit-item',item.diaryNo, item.contents)">수정</button>
-						<button v-if="item.diaryNo !== ''" @click="$emit('delete-item', item.DiaryNo)">삭제</button>
-						<button v-if="item.diaryNo == ''" @click="$emit('save-item', item.id)">저장</button>
+						<input type="text" class="txt" v-modal:item.contents :value="item.contents" @change="$emit('change-data', item.id, $event.target.value)"/>
+						<button 
+							v-if="item.diaryNo !== ''" 
+							@click="$emit('edit-item',item.diaryNo, item.contents)"
+							class="btn-edit"
+						>수정</button>
+						<button 
+							v-if="item.diaryNo !== ''" 
+							@click="$emit('delete-item', item.DiaryNo)"
+							class="btn-del"
+						>삭제</button>
+						<button 
+							v-if="item.diaryNo == ''" 
+							@click="$emit('save-item', item.id)"
+							class="btn-save"
+						>저장</button>
 						<!-- <button :show="item.id" @click="enableEdit(item.id)">취소</button> -->
 					</div>
 				</div>
@@ -78,5 +90,41 @@ export default {
 }
 .hide{
 	display: none;
+}
+.txt{
+	width: 70%;
+	padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.btn-edit{
+	background-color: #e7e7e7; /* Green */
+  border: none;
+  color: black;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;  
+}
+.btn-del{
+	background-color: #f44336; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-save{
+	background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;  
 }
 </style>

@@ -193,6 +193,7 @@ export default {
       const {data} = await UserSvc.saveDiary(param);
       if(data.code == 1){
         alert(data.msg);
+        //저장 후 데이터 가져오기
         return;
       }else{
         alert(data.msg);
