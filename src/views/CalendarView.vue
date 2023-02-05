@@ -18,6 +18,7 @@
     
     <ModalView v-if="showModal" 
       v-bind:dayEventData="dayEventData" 
+      v-bind:startStr="startStr"
       @delete-item="fn_deleteItem"
       @edit-item="fn_editItem"
       @save-item="fn_saveItem"
@@ -46,12 +47,12 @@ import ModalView from '../components/ModalView.vue';
 export default {
   created(){    
     const date = new Date();
-    let year = date.getFullYear().toString();
-    let month = date.getMonth()+1;    
+    this.year = date.getFullYear().toString();
+    this.month = date.getMonth()+1;    
 
-    month = month > 9 ? month : `0${month}`;
+    this.month = this.month > 9 ? this.month : `0${this.month}`;
     
-    this.fetchDiary(year,month);
+    this.fetchDiary(this.year, this.month);
     
   },
   components: {
@@ -64,6 +65,7 @@ export default {
       userNo:'',
       year: '',
       month: '', 
+      startStr: '',
       showModal: false,           
       dayEventData : [],
       calendarOptions: {
@@ -114,6 +116,7 @@ export default {
     ,
 
     postData(eventData){
+      this.calendarOptions.events = [];
       for(var i=0; i<eventData.length; i++){
         eventData[i].title = eventData[i].contents;
         eventData[i].start = eventData[i].regDate;
@@ -135,20 +138,20 @@ export default {
       location.reload();
     }
     ,
-    handleDateSelect(selectInfo) {
-      //let title = prompt('Please enter a new title for your event')
+    handleDateSelect(selectInfo) {      
       let calendarApi = selectInfo.view.calendar;
 
       calendarApi.unselect() // clear date selection                  
 
       this.dayEventData = [];
-      
+      this.startStr = '';
       this.inputDayEventData(selectInfo);      
       
       this.showModal = true;      
     },
 
-    inputDayEventData(selectInfo){      
+    inputDayEventData(selectInfo){            
+      this.startStr = selectInfo.startStr;
       this.calendarOptions.events.map((i)=>{                
         if(selectInfo.startStr == i.start){
           this.dayEventData.push(i);
@@ -169,16 +172,17 @@ export default {
         );
 			}
 		},
-    fn_addItem(){
+    fn_addItem(startStr){      
       var param = {
         contents: "",
         id: Math.random(),
-        regDate: this.dayEventData[0].regDate,
+        regDate: startStr,
         diaryNo: "",
-        start: this.dayEventData[0].regDate,
+        start: startStr,
         title: "",
         userNo: this.$store.getters.getUserNo,
       };      
+      
       this.dayEventData.push(param);
     }
     ,
@@ -194,6 +198,14 @@ export default {
       if(data.code == 1){
         alert(data.msg);
         //저장 후 데이터 가져오기
+        this.fetchDiary(this.year, this.month);        
+        this.dayEventData = [];  
+        this.calendarOptions.events.map((i)=>{                     
+          if(req.regDate == i.start){                                                
+            this.dayEventData.push(i);
+          }
+        })
+
         return;
       }else{
         alert(data.msg);
@@ -213,7 +225,7 @@ export default {
 			const { data } = await UserSvc.saveDiary(param);
 			if(data.code == 1){
 				alert(data.msg);
-				var idx = this.dayEventData.findIndex((item) => item.diaryNo == diaryNo);        
+				var idx = this.dayEventData.findIndex((item) => item.diaryNo == diaryNo);
         this.dayEventData[idx].contents = contents;
         return;
 			}else{

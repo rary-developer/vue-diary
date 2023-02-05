@@ -3,10 +3,11 @@
 		<div class="modal modal-overlay">			
 			<div class="modal-window">
 				<h2>Diary Info</h2>
-				<button @click="$emit('add-item')">추가</button>
-				<div class="modal-card" v-for="item in dayEventData" :key="item.id">
-					<div :bind="item.id">												
-						<input type="text" class="txt" v-modal:item.contents :value="item.contents" @change="$emit('change-data', item.id, $event.target.value)"/>
+				<button @click="$emit('add-item', startStr)" class="btn-add">추가</button>
+				<button @click="$emit('close-modal')" class="btn-add">닫기</button>
+				<div class="modal-card" v-for="item in dayEventData" :key="item.id">					
+					<div :bind="item.id">
+						<input type="text" class="txt" :value="item.contents" @change="$emit('change-data', item.id, $event.target.value)"/>
 						<button 
 							v-if="item.diaryNo !== ''" 
 							@click="$emit('edit-item',item.diaryNo, item.contents)"
@@ -14,7 +15,7 @@
 						>수정</button>
 						<button 
 							v-if="item.diaryNo !== ''" 
-							@click="$emit('delete-item', item.DiaryNo)"
+							@click="$emit('delete-item', item.diaryNo)"
 							class="btn-del"
 						>삭제</button>
 						<button 
@@ -29,8 +30,7 @@
 					<slot name="footer">
 						<button @click="$emit('close-modal')">닫기</button>
 					</slot>
-				</footer> -->
-				<button @click="$emit('close-modal')">닫기</button>
+				</footer> -->				
 			</div>												
 		</div>
 	</transition>
@@ -41,7 +41,7 @@
 
 export default {
 	name: 'dayEventData',
-	props: ['dayEventData'],
+	props: ['dayEventData','startStr'],
 	// data(){
 	// return{
 	// eventData : this.dayEventData
@@ -73,12 +73,12 @@ export default {
 .modal-window{
 	background: #fff;
   border-radius: 4px;
-  overflow: hidden;	
+  overflow: scroll;	
 	width: 50%;
 	height: 50%;
 }
 .modal-card{
-	padding: 10px 20px;
+	padding: 10px 20px;	
 }
 .modal-footer{
 	background: #ccc;
@@ -100,8 +100,17 @@ export default {
   border-radius: 4px;
   box-sizing: border-box;
 }
+.btn-add{
+	background-color: #e7e7e7; 
+	border: 1px solid black;
+  color: black;
+	padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;  
+}
 .btn-edit{
-	background-color: #e7e7e7; /* Green */
+	background-color: #e7e7e7; 
   border: none;
   color: black;
   padding: 12px 20px;
