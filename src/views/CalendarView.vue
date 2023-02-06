@@ -2,8 +2,8 @@
   <div class='demo-app'>    
     <div class='demo-app-main'>
       <FullCalendar
-        id="calendar"
-        ref="calendar"
+        id="fullCalendar"
+        ref="fullCalendar"
         class='demo-app-calendar'
         :options='calendarOptions'        
       >
@@ -74,6 +74,36 @@ export default {
           timeGridPlugin,
           interactionPlugin // needed for dateClick
         ],
+        customButtons:{
+          prev: {
+            text: 'PREV',
+            click: () => {                         
+              let calendarApi = this.$refs.fullCalendar.getApi();
+              calendarApi.prev();
+              if(Number(this.month) == 1){
+                this.month = '12';
+                this.year = String(Number(this.year)-1);                
+              }else{                
+                this.month = Number(this.month)-1 > 9 ? String(this.month-1) : `0${Number(this.month)-1}`;
+              }
+              this.fetchDiary(this.year,this.month);              
+            }
+          },
+          next: {
+            text: 'NEXT',
+            click: () => {                         
+              let calendarApi = this.$refs.fullCalendar.getApi();
+              calendarApi.next();
+              if(Number(this.month) == 12){
+                this.month = '01';
+                this.year = String(Number(this.year)+1);
+              }else{                
+                this.month = Number(this.month)+1 > 9 ? String(this.month+1) : `0${Number(this.month)+1}`;
+              }              
+              this.fetchDiary(this.year,this.month);
+            }
+          }
+        },
         headerToolbar: {
           left: 'prev',
           center: 'title',
@@ -109,9 +139,8 @@ export default {
       }
       
       const response = await UserSvc.fetchDiaryList(param);            
-      var eventData = response.data.data;            
-      this.postData(eventData);                  
-      
+      var eventData = response.data.data;
+      this.postData(eventData);                        
     }
     ,
 
@@ -135,7 +164,7 @@ export default {
 
     fn_closeModal(){
       this.showModal=false;
-      location.reload();
+      //location.reload();
     }
     ,
     handleDateSelect(selectInfo) {      
@@ -170,6 +199,8 @@ export default {
         this.dayEventData = this.dayEventData.filter(
           (item)=> (item.diaryNo != diaryNo)
         );
+
+        this.fetchDiary(this.year, this.month);
 			}
 		},
     fn_addItem(startStr){      
@@ -198,14 +229,15 @@ export default {
       if(data.code == 1){
         alert(data.msg);
         //저장 후 데이터 가져오기
-        this.fetchDiary(this.year, this.month);        
-        this.dayEventData = [];  
-        this.calendarOptions.events.map((i)=>{                     
-          if(req.regDate == i.start){                                                
+        this.fetchDiary(this.year, this.month);
+        
+        this.dayEventData = [];
+        this.calendarOptions.events.map((i)=>{                               
+          if(req.start == i.start){                                                
             this.dayEventData.push(i);
           }
         })
-
+        
         return;
       }else{
         alert(data.msg);
@@ -269,7 +301,7 @@ b { /* used for event dates/times */
 
 .demo-app {
   display: flex;
-  min-height: 100%;
+  min-height: 80%;
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
 }
