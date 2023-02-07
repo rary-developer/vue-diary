@@ -28,5 +28,10 @@ export default new VueRouter({
       component: () => import('@/views/CalendarView.vue'),
       
     },
+    {
+      path: '/calendar2',
+      component: () => import('@/views/CalendarView2.vue'),
+      
+    },
   ]
 });

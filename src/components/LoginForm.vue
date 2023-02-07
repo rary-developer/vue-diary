@@ -57,7 +57,7 @@ export default {
           this.$store.commit('setUserData', response.data);          
           saveUserNoToCookie(response.data.data.userData);
           saveUserIdToCookie(response.data.data.userData);
-          this.$router.push('/calendar')
+          this.$router.push('/calendar2')
         }
 
       }catch(error){
