@@ -1,25 +1,27 @@
 <template>
   <div class="sec_cal">
-    <div class='rap'>
-      <div class="header">
-        <div class="btn prevDay"></div>
-        <h2 class='dateTitle'></h2>
-        <div class="btn nextDay"></div>
+  <div class="cal_nav">
+    <button class="nav-btn go-prev" @click="prevMonth">prev</button>
+    <div class="year-month">{{ currentYear }}년 {{ currentMonth }}월</div>
+    <button class="nav-btn go-next" @click="nextMonth">next</button>
+  </div>
+  <div class="cal_wrap">
+    <div class="days">
+      <div class="day">SUN</div>
+      <div class="day">MON</div>
+      <div class="day">TUE</div>
+      <div class="day">WED</div>
+      <div class="day">THU</div>
+      <div class="day">FRI</div>
+      <div class="day">SAT</div>      
+    </div>
+    <div class="dates">
+      <div v-for="(item, index) in calendarInfo" :key="index" class="day">
+        {{ item.date }}
       </div>
-    
-      <div class="grid dateHead">
-        <div>일</div>
-        <div>월</div>
-        <div>화</div>
-        <div>수</div>
-        <div>목</div>
-        <div>금</div>
-        <div>토</div>
-      </div>
-
-      <div class="grid dateBoard"></div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -31,33 +33,66 @@ export default {
       currentMonth: '',      
       currentDate: '',
       currentDay: '',
-
+      
       lastDate: '',
       lastDay:'',
-
       year: '',
       month: '',      
       date: '',
       day: '',
+
+      calendarInfo: [],
     }    
   },
   methods: {
-    calendarRender(){
-      this.currentYear = this.year;
-      this.currentMonth = this.month;      
-      this.currentDate = this.date;
-      this.currentDay = this.day;
+    calendarRender(thisMonth){
+      this.currentYear = thisMonth.getFullYear();
+      this.currentMonth = thisMonth.getMonth();
+      this.currentDate = thisMonth.getDate();
+      // console.log(this.currentYear, this.currentMonth, this.currentDate);
       
+      //지난달
       var prevDay = new Date(this.currentYear, this.currentMonth-1, 0);
       this.lastDate = prevDay.getDate();
       this.lastDay = prevDay.getDay();
       
+      //이번달
       var startDay = new Date(this.currentYear, this.currentMonth, 0);
       this.currentDate = startDay.getDate();
       this.currentDay = startDay.getDay();
       
+      this.calendarInfo = [];
       
+      for(let i = this.lastDate - this.lastDay ; i <= this.lastDate; i++ ){        
+        this.calendarInfo.push({"date":i});
+      }
+
+      for(let i= 1; i<= this.currentDate; i++){
+        this.calendarInfo.push({"date":i});
+      }            
     },
+    prevMonth(){
+      console.log(this.currentMonth-1);
+      if(this.currentMonth - 1 == 0){                
+        this.currentYear = this.currentYear-1;
+        this.currentMonth = 12;
+      }else{        
+        this.currentMonth = this.currentMonth-1;
+      }
+      console.log(this.currentYear);
+      console.log(this.currentMonth);
+      this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));
+    },
+    nextMonth(){
+      if(this.currentMonth +1 > 12){
+        this.currentYear = this.currentYear+1;
+        this.currentMonth = 1;
+      }else{
+        this.currentMonth = this.currentMonth+1;
+      }
+      this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));  
+    }
+
   },  
   mounted(){
      // 날짜 정보 가져오기
@@ -69,90 +104,127 @@ export default {
     
     
     this.currentYear = date.getFullYear(); // 달력에서 표기하는 연
-    this.currentMonth = date.getMonth(); // 달력에서 표기하는 월    
-    this.currentDate = date.getDate(); // 달력에서 표기하는 일
-    this.currentDay = date.getDay(); // 달력에서 표기하는 요일
+    this.currentMonth = date.getMonth()+1; // 달력에서 표기하는 월    
+    this.currentDate = date.getDate(); // 달력에서 표기하는 일    
     
-    this.calendarRender();
+    var thisMonth = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
+    this.calendarRender(thisMonth);
   },
 }
 </script>
 
 <style>
-/* 달력 */
-.dateHead div {
-  background: greenyellow;
-  color: black;
-  text-align: center;
-  border-radius: 5px;
+/* section calendar */
+
+.sec_cal {
+    width: 70%;
+    margin: 0 auto;
+    font-family: "NotoSansR";
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-gap: 5px;
+.sec_cal .cal_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 78px;
 }
 
-.grid div {
-  padding: .6rem;
-  font-size: .9rem;
-  cursor: pointer;
+.sec_cal .cal_nav .year-month {
+    width: 300px;
+    text-align: center;
+    line-height: 1;
 }
 
-.dateBoard div {
-  color: #222;
-  font-weight: bold;
-  min-height: 6rem;
-  padding: .6rem .8rem;
-  border-radius: 5px;
-  border: 1px solid #eee;
+.sec_cal .cal_nav .nav {
+    display: flex;
+    border: 1px solid #333333;
+    border-radius: 5px;
 }
 
-.noColor {
-  background: #eee;
+.sec_cal .cal_nav .go-prev,
+.sec_cal .cal_nav .go-next {
+    display: block;
+    width: 50px;
+    height: 78px;
+    font-size: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+.sec_cal .cal_nav .go-prev::before,
+.sec_cal .cal_nav .go-next::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #000;
+    border-width: 3px 3px 0 0;
+    transition: border 0.1s;
 }
 
-/* 좌우 버튼 */
-.btn {
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid #000;
-  border-width: 3px 3px 0 0;
-  cursor: pointer;
+.sec_cal .cal_nav .go-prev:hover::before,
+.sec_cal .cal_nav .go-next:hover::before {
+    border-color: #ed2a61;
 }
 
-.prevDay {
-  transform: rotate(-135deg);
+.sec_cal .cal_nav .go-prev::before {
+    transform: rotate(-135deg);
 }
 
-.nextDay {
-  transform: rotate(45deg);
+.sec_cal .cal_nav .go-next::before {
+    transform: rotate(45deg);
 }
 
-/* ---- */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-* {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  box-sizing: border-box;  
-  font-family: Pretendard;
+.sec_cal .cal_wrap {
+    padding-top: 40px;
+    position: relative;
+    margin: 0 auto;
 }
 
-.rap {
-  max-width: 820px;
-  padding: 0 1.4rem;
-  margin-top: 1.4rem;
+.sec_cal .cal_wrap .days {
+    display: flex;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
-.dateHead {
-  margin: .4rem 0;
+.sec_cal .cal_wrap::after {
+    top: 368px;
+}
+
+.sec_cal .cal_wrap .day {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 7);
+    height: 50px;
+    text-align: left;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+    border-radius:5px
+}
+
+.current.today {background: rgb(242 242 242);}
+
+.sec_cal .cal_wrap .dates {
+    display: flex;
+    flex-flow: wrap;
+    height: 290px;
+}
+
+.sec_cal .cal_wrap .day:nth-child(7n ) {
+    color: #3c6ffa;
+}
+
+.sec_cal .cal_wrap .day:nth-child(7n + 1) {
+    color: #ed2a61;
+}
+
+.sec_cal .cal_wrap .day.disable {
+    color: #ddd;
 }
 </style>
