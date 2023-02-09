@@ -16,8 +16,27 @@
       <div class="day">SAT</div>      
     </div>
     <div class="dates">
-      <div v-for="(item, index) in calendarInfo" :key="index" class="day">
-        {{ item.date }}
+      <div v-for="(item, index) in calendarInfo" :key="index" class="cal">
+        <div>
+          <div class="fc-daygrid-day-frame">
+            <div class="fc-daygrid-day-top">                            
+              <p class="fc-daygrid-day-number">{{ item.day }}</p>
+            </div>
+            <div 
+              v-for="(info, index) in calendarEvent" 
+              :key="index" 
+              class="fc-daygrid-day-events"
+              >
+              <p 
+                v-if="info.regDate == item.date"
+                class="fc-daygrid-event-harness"
+              >
+                {{info.contents}}
+              </p>
+            </div>
+          </div>
+        </div>        
+        <!-- {{ item.date }} -->
       </div>
     </div>
   </div>
@@ -25,6 +44,8 @@
 </template>
 
 <script>
+import UserSvc from '@/service/UserSvc';
+
 export default {  
   data(){
     return{
@@ -42,6 +63,7 @@ export default {
       day: '',
 
       calendarInfo: [],
+      calendarEvent: [],
     }    
   },
   methods: {
@@ -62,25 +84,48 @@ export default {
       this.currentDay = startDay.getDay();
       
       this.calendarInfo = [];
+      var year = `${this.currentYear}`;
+      var month = this.currentMonth > 9 ? `${this.currentMonth}` : `0${this.currentMonth}`;
       
       for(let i = this.lastDate - this.lastDay ; i <= this.lastDate; i++ ){        
-        this.calendarInfo.push({"date":i});
+        this.calendarInfo.push({"day":i, "date":""});
       }
 
-      for(let i= 1; i<= this.currentDate; i++){
-        this.calendarInfo.push({"date":i});
-      }            
+      for(var i= 1; i<= this.currentDate; i++){
+        var day = i < 10 ? '0'+i.toString() : i.toString();        
+        this.calendarInfo.push({
+          "day":i, 
+          "date":year+"-"+month+"-"+day
+        });
+      }
+      
+      this.year = this.currentYear;
+      this.month = this.currentMonth > 9 ? this.currentMonth : `0${this.currentMonth}`;
+      
+      this.fetchDiary(this.year, this.month);
+
     },
-    prevMonth(){
-      console.log(this.currentMonth-1);
+    async fetchDiary(year,month){
+      const param = {
+        year: year,
+        month: month,
+        userNo: this.userNo
+      }
+
+      const response = await UserSvc.fetchDiaryList(param);
+      
+      this.calendarEvent = response.data.data;
+      
+    }
+    ,
+    prevMonth(){      
       if(this.currentMonth - 1 == 0){                
         this.currentYear = this.currentYear-1;
         this.currentMonth = 12;
       }else{        
         this.currentMonth = this.currentMonth-1;
       }
-      console.log(this.currentYear);
-      console.log(this.currentMonth);
+      
       this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));
     },
     nextMonth(){
@@ -186,8 +231,8 @@ export default {
 
 .sec_cal .cal_wrap .days {
     display: flex;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+    /* margin-bottom: 20px;
+    padding-bottom: 20px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -200,12 +245,19 @@ export default {
     align-items: center;
     justify-content: center;
     width: calc(100% / 7);
-    height: 50px;
+    height: 30px;
     text-align: left;
     color: #999;
     font-size: 12px;
     text-align: center;
     border-radius:5px
+}
+
+.cal {    
+    width: calc(100% / 7);
+    height: 100px;    
+    color: #999;
+    font-size: 12px;            
 }
 
 .current.today {background: rgb(242 242 242);}
@@ -220,11 +272,42 @@ export default {
     color: #3c6ffa;
 }
 
+.sec_cal .cal_wrap .cal:nth-child(7n ) {
+    color: #3c6ffa;
+}
+
 .sec_cal .cal_wrap .day:nth-child(7n + 1) {
+    color: #ed2a61;
+}
+
+.sec_cal .cal_wrap .cal:nth-child(7n + 1) {
     color: #ed2a61;
 }
 
 .sec_cal .cal_wrap .day.disable {
     color: #ddd;
+}
+.fc-daygrid-day-frame{
+  min-height: initial;
+  padding: 2px;
+}
+.fc-daygrid-day-top{
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 20px;
+}
+.fc-daygrid-day-number{
+  position: relative;
+  z-index: 4;
+  padding: 4px;
+}
+.fc-daygrid-day-events{  
+  left: 0;
+  right: 0;
+  color: black;
+  margin-top: 1px;
+}
+.fc-daygrid-event-harness{
+  position: relative;
 }
 </style>
