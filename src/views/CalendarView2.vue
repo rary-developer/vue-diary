@@ -22,18 +22,20 @@
             <div class="fc-daygrid-day-top">                            
               <p class="fc-daygrid-day-number">{{ item.day }}</p>
             </div>
-            <div 
-              v-for="(info, index) in calendarEvent" 
-              :key="index" 
-              class="fc-daygrid-day-events"
-              >
-              <p 
-                v-if="info.regDate == item.date"
-                class="fc-daygrid-event-harness"
-              >
-                {{info.contents}}
-              </p>
-            </div>
+            <div class="fc-daygrid-day-events">
+              <div 
+                v-for="(info, index) in calendarEvent" 
+                :key="index" 
+                class="fc-daygrid-day-events"
+                >
+                <p 
+                  v-if="info.regDate == item.date"
+                  class="fc-daygrid-event-harness"
+                >
+                  {{info.contents}}
+                </p>
+              </div>
+            </div>            
           </div>
         </div>        
         <!-- {{ item.date }} -->
