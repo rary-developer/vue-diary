@@ -164,7 +164,7 @@ export default {
 
     fn_closeModal(){
       this.showModal=false;
-      //location.reload();
+      //닫기만
     }
     ,
     handleDateSelect(selectInfo) {      

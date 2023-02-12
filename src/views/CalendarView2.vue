@@ -17,7 +17,7 @@
     </div>
     <div class="dates">
       <div v-for="(item, index) in calendarInfo" :key="index" class="cal">
-        <div>
+        <div @click="handleDateSelect(item.date)">
           <div class="fc-daygrid-day-frame">
             <div class="fc-daygrid-day-top">                            
               <p class="fc-daygrid-day-number">{{ item.day }}</p>
@@ -42,13 +42,32 @@
       </div>
     </div>
   </div>
+
+  <ModalView v-if="showModal" 
+      v-bind:dayEventData="dayEventData" 
+      v-bind:startStr="startStr"
+      @delete-item="fn_deleteItem"
+      @edit-item="fn_editItem"
+      @save-item="fn_saveItem"
+      @add-item="fn_addItem"
+      @close-modal="fn_closeModal"
+      @change-data="fn_change_data"
+    >
+      <template slot="footer">
+        
+      </template>
+    </ModalView>
 </div>
 </template>
 
 <script>
 import UserSvc from '@/service/UserSvc';
+import ModalView from '../components/ModalView.vue';
 
 export default {  
+  components:{
+    ModalView
+  },
   data(){
     return{
       userNo: this.$store.getters.getUserNo,
@@ -66,6 +85,9 @@ export default {
 
       calendarInfo: [],
       calendarEvent: [],
+      dayEventData: [],
+
+      showModal: false,
     }    
   },
   methods: {
@@ -90,7 +112,9 @@ export default {
       var month = this.currentMonth > 9 ? `${this.currentMonth}` : `0${this.currentMonth}`;
       
       for(let i = this.lastDate - this.lastDay ; i <= this.lastDate; i++ ){        
-        this.calendarInfo.push({"day":i, "date":""});
+        this.calendarInfo.push({
+          "day":i, "date":""
+        });
       }
 
       for(var i= 1; i<= this.currentDate; i++){
@@ -139,7 +163,109 @@ export default {
       }
       this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));  
     }
+    ,
+    handleDateSelect(selectDate){      
+      this.dayEventData = [];
+      this.startStr = '';
+      this.inputDayEventData(selectDate);
 
+      this.showModal = true;
+    },
+    inputDayEventData(selectDate){      
+      this.startStr = selectDate;
+      for(var i=0; i<this.calendarEvent.length; i++){
+        if(this.startStr == this.calendarEvent[i].regDate){          
+          var data = this.calendarEvent[i];          
+          data.title = this.calendarEvent[i].contents;
+          data.start = this.calendarEvent[i].regDate;
+          data.id = Math.random();
+          this.dayEventData.push(this.calendarEvent[i]);          
+        }
+      }      
+    },
+    async fn_deleteItem(diaryNo){			
+			const param = {
+				diaryNo: diaryNo,
+			}
+			const response = await UserSvc.deleteDiary(param);
+			if(response.data.code == "1"){
+				alert(response.data.msg);
+				//dayEventData 삭제 props데이터 수정
+        this.dayEventData = this.dayEventData.filter(
+          (item)=> (item.diaryNo != diaryNo)
+        );
+
+        this.fetchDiary(this.year, this.month);
+			}
+		},
+    fn_addItem(startStr){      
+      var param = {
+        contents: "",
+        id: Math.random(),
+        regDate: startStr,
+        diaryNo: "",
+        start: startStr,
+        title: "",
+        userNo: this.$store.getters.getUserNo,
+      };      
+      
+      this.dayEventData.push(param);
+    },
+    fn_change_data(id, contents){            
+      var idx = this.dayEventData.findIndex((item) => item.id == id);
+      this.dayEventData[idx].contents = contents;
+    },
+    fn_closeModal(){
+      this.showModal=false;
+      //닫기만
+    },
+    async fn_saveItem(id){      
+      var req = this.dayEventData.filter((item)=> item.id==id)[0];
+      const param = {
+        regDate: req.start,
+        contents: req.contents,
+        userNo : this.$store.getters.getUserNo,
+      }
+
+      const {data} = await UserSvc.saveDiary(param);
+      if(data.code == 1){
+        alert(data.msg);
+        //저장 후 데이터 가져오기
+        this.fetchDiary(this.year, this.month);
+        
+        this.dayEventData = [];
+        this.calendarOptions.events.map((i)=>{                               
+          if(req.start == i.start){                                                
+            this.dayEventData.push(i);
+          }
+        })
+        
+        return;
+      }else{
+        alert(data.msg);
+        return;
+      }
+    },
+    async fn_editItem(diaryNo,contents){
+      var req = this.dayEventData.filter((item)=> item.diaryNo==diaryNo)[0];
+      const param = {
+				diaryNo: req.diaryNo,
+				regDate: req.start,
+				contents: req.contents,
+				userNo: this.$store.getters.getUserNo,
+			}			
+      
+			const { data } = await UserSvc.saveDiary(param);
+			if(data.code == 1){
+				alert(data.msg);
+				var idx = this.dayEventData.findIndex((item) => item.diaryNo == diaryNo);
+        this.dayEventData[idx].contents = contents;
+        return;
+			}else{
+        alert(data.msg);
+        return;
+      }						
+    }
   },  
   mounted(){
      // 날짜 정보 가져오기
@@ -310,6 +436,6 @@ export default {
   margin-top: 1px;
 }
 .fc-daygrid-event-harness{
-  position: relative;
+  position: relative;  
 }
 </style>
