@@ -71,8 +71,8 @@ export default {
   data(){
     return{
       userNo: this.$store.getters.getUserNo,
-      currentYear: '',
-      currentMonth: '',      
+      currentYear: 0,
+      currentMonth: 0,      
       currentDate: '',
       currentDay: '',
       
@@ -132,25 +132,26 @@ export default {
 
     },
     async fetchDiary(year,month){
+      this.calendarEvent = [];
+      
       const param = {
         year: year,
         month: month,
         userNo: this.userNo
       }
-
-      const response = await UserSvc.fetchDiaryList(param);
       
+      const response = await UserSvc.fetchDiaryList(param);      
       this.calendarEvent = response.data.data;
       
     }
     ,
     prevMonth(){      
-      if(this.currentMonth - 1 == 0){                
+      if(this.currentMonth - 1 < 1){                
         this.currentYear = this.currentYear-1;
         this.currentMonth = 12;
       }else{        
         this.currentMonth = this.currentMonth-1;
-      }
+      }      
       
       this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));
     },
@@ -221,6 +222,7 @@ export default {
     },
     async fn_saveItem(id){      
       var req = this.dayEventData.filter((item)=> item.id==id)[0];
+      
       const param = {
         regDate: req.start,
         contents: req.contents,
@@ -228,17 +230,18 @@ export default {
       }
 
       const {data} = await UserSvc.saveDiary(param);
+      
       if(data.code == 1){
         alert(data.msg);
         //저장 후 데이터 가져오기
         this.fetchDiary(this.year, this.month);
         
-        this.dayEventData = [];
-        this.calendarOptions.events.map((i)=>{                               
-          if(req.start == i.start){                                                
+        for(var i =0; i<this.calendarEvent.length; i++){
+          
+          if(req.start == this.calendarEvent[i].regDate){                                                
             this.dayEventData.push(i);
           }
-        })
+        }
         
         return;
       }else{
