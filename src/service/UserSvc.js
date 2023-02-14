@@ -9,14 +9,14 @@ class userSvc extends Service{
   }
   signUp(param={}) {
       return this.post('/api/user/up', param)
-          .then(response => {                            
-            console.log(response);  
+          .then(response => {                                        
             return response;
           });
   }
   fetchDiaryList(param={}){
     return this.get('/api/diary/list', param)
       .then(response => {        
+        
         return response;
       })
   }

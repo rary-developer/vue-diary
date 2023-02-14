@@ -91,11 +91,7 @@ export default {
     }    
   },
   methods: {
-    calendarRender(thisMonth){
-      this.currentYear = thisMonth.getFullYear();
-      this.currentMonth = thisMonth.getMonth();
-      this.currentDate = thisMonth.getDate();
-      // console.log(this.currentYear, this.currentMonth, this.currentDate);
+    calendarRender(){      
       
       //지난달
       var prevDay = new Date(this.currentYear, this.currentMonth-1, 0);
@@ -142,7 +138,7 @@ export default {
       
       const response = await UserSvc.fetchDiaryList(param);      
       this.calendarEvent = response.data.data;
-      
+      console.log(this.calendarEvent);
     }
     ,
     prevMonth(){      
@@ -152,8 +148,9 @@ export default {
       }else{        
         this.currentMonth = this.currentMonth-1;
       }      
-      
-      this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));
+      //console.log(this.currentYear, this.currentMonth);
+      // console.log(new Date(this.currentYear, this.currentMonth, this.currentDate).getFullYear());
+      this.calendarRender();
     },
     nextMonth(){
       if(this.currentMonth +1 > 12){
@@ -162,7 +159,7 @@ export default {
       }else{
         this.currentMonth = this.currentMonth+1;
       }
-      this.calendarRender(new Date(this.currentYear, this.currentMonth, this.currentDate));  
+      this.calendarRender();  
     }
     ,
     handleDateSelect(selectDate){      
@@ -232,13 +229,16 @@ export default {
       const {data} = await UserSvc.saveDiary(param);
       
       if(data.code == 1){
+        //this.dayEventData = [];
+        
         alert(data.msg);
         //저장 후 데이터 가져오기
         this.fetchDiary(this.year, this.month);
         
+        
         for(var i =0; i<this.calendarEvent.length; i++){
-          
-          if(req.start == this.calendarEvent[i].regDate){                                                
+          console.log(this.calendarEvent[i]);
+          if(req.start == this.calendarEvent[i].regDate){
             this.dayEventData.push(i);
           }
         }
@@ -283,8 +283,9 @@ export default {
     this.currentMonth = date.getMonth()+1; // 달력에서 표기하는 월    
     this.currentDate = date.getDate(); // 달력에서 표기하는 일    
     
-    var thisMonth = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
-    this.calendarRender(thisMonth);
+    //var thisMonth = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
+    
+    this.calendarRender();
   },
 }
 </script>
