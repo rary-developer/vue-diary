@@ -49,6 +49,8 @@ export default {
         //const {data} = await loginUser(userData);
         //console.log(data);        
         //this.$router.push('/calendar')
+
+        
         const response = await UserSvc.signIn(userData);        
         if(response == -1){                    
           alert("아이디 혹은 비밀번호가 잘못됐습니다.");

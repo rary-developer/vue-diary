@@ -235,7 +235,7 @@ export default {
         //저장 후 데이터 가져오기
         this.fetchDiary(this.year, this.month);
         
-        
+        //데이터 넣고.. 가져와서 쓰기.. 왜 안될까
         for(var i =0; i<this.calendarEvent.length; i++){
           console.log(this.calendarEvent[i]);
           if(req.start == this.calendarEvent[i].regDate){
