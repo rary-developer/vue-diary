@@ -87,6 +87,8 @@ export default {
       calendarEvent: [],
       dayEventData: [],
 
+      regDate: '',
+
       showModal: false,
     }    
   },
@@ -129,16 +131,26 @@ export default {
     },
     async fetchDiary(year,month){
       this.calendarEvent = [];
-      
+      this.dayEventData = [];
       const param = {
         year: year,
         month: month,
         userNo: this.userNo
-      }
+      }            
       
-      const response = await UserSvc.fetchDiaryList(param);      
-      this.calendarEvent = response.data.data;
-      console.log(this.calendarEvent);
+      await this.$store.dispatch('DIARY_DATA', param)
+        .then(()=>{
+          this.calendarEvent = this.$store.getters.getDiaryList
+          if(this.regDate != ''){
+            for(var i =0; i<this.calendarEvent.length; i++){              
+              if(this.regDate == this.calendarEvent[i].regDate){
+                this.dayEventData.push(this.calendarEvent[i]);
+              }
+            }
+          }
+        })
+      
+      
     }
     ,
     prevMonth(){      
@@ -165,8 +177,9 @@ export default {
     handleDateSelect(selectDate){      
       this.dayEventData = [];
       this.startStr = '';
+      this.regDate = selectDate;
       this.inputDayEventData(selectDate);
-
+      
       this.showModal = true;
     },
     inputDayEventData(selectDate){      
@@ -236,12 +249,12 @@ export default {
         this.fetchDiary(this.year, this.month);
         
         //데이터 넣고.. 가져와서 쓰기.. 왜 안될까
-        for(var i =0; i<this.calendarEvent.length; i++){
-          console.log(this.calendarEvent[i]);
-          if(req.start == this.calendarEvent[i].regDate){
-            this.dayEventData.push(i);
-          }
-        }
+        // for(var i =0; i<this.calendarEvent.length; i++){
+        //   console.log(this.calendarEvent[i]);
+        //   if(req.start == this.calendarEvent[i].regDate){
+        //     this.dayEventData.push(i);
+        //   }
+        // }
         
         return;
       }else{
@@ -427,6 +440,7 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   margin-right: 20px;
+  height: 30px;
 }
 .fc-daygrid-day-number{
   position: relative;

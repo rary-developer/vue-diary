@@ -5,6 +5,7 @@ import {
   getUserIdFromCookie,
   deleteCookie
 } from '@/utils/cookies'
+import UserSvc from '@/service/UserSvc';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     getUserNo(state){
       return state.userNo;
+    },
+    getDiaryList(state){
+      return state.diaryList;
     }
   },
   mutations: {
@@ -33,11 +37,16 @@ export default new Vuex.Store({
       deleteCookie('userNo','userId');      
     },
     setDiaryList(state, data){
-      state.diaryList.push(data);
+      state.diaryList = data;
     }
   },
   actions: {
-    
+    async DIARY_DATA({commit}, param){
+      this.diaryList = [];
+      const {data} = await UserSvc.fetchDiaryList(param);      
+      commit('setDiaryList',data.data);
+      return data;
+    }
   },
   
 })

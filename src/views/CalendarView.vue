@@ -233,6 +233,7 @@ export default {
         
         this.dayEventData = [];
         this.calendarOptions.events.map((i)=>{                               
+          console.log(i);
           if(req.start == i.start){                                                
             this.dayEventData.push(i);
           }
