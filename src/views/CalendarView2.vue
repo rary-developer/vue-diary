@@ -16,7 +16,7 @@
       <div class="day">SAT</div>      
     </div>
     <div class="dates">
-      <div v-for="(item, index) in calendarInfo" :key="index" class="cal">
+      <div v-for="(item, index) in calendarInfo" :key="index" class="cal"> <!--key-->
         <div @click="handleDateSelect(item.date)">
           <div class="fc-daygrid-day-frame">
             <div class="fc-daygrid-day-top">                            
@@ -27,7 +27,7 @@
                 v-for="(info, index) in calendarEvent" 
                 :key="index" 
                 class="fc-daygrid-day-events"
-                >
+                ><!--중복키 값-->
                 <p 
                   v-if="info.regDate == item.date"
                   class="fc-daygrid-event-harness"
@@ -53,7 +53,7 @@
       @close-modal="fn_closeModal"
       @change-data="fn_change_data"
     >
-      <template slot="footer">
+      <template>
         
       </template>
     </ModalView>
@@ -70,7 +70,7 @@ export default {
   },
   data(){
     return{
-      userNo: this.$store.getters.getUserNo,
+      userNo: this.$store.getters.getUserNo, //computed
       currentYear: 0,
       currentMonth: 0,      
       currentDate: '',
@@ -126,34 +126,37 @@ export default {
       this.year = this.currentYear;
       this.month = this.currentMonth > 9 ? this.currentMonth : `0${this.currentMonth}`;
       
-      this.fetchDiary(this.year, this.month);
+      this.fetchDiary();
 
     },
-    async fetchDiary(year,month){
+    async fetchDiary(){
       this.calendarEvent = [];
       this.dayEventData = [];
       const param = {
-        year: year,
-        month: month,
+        year: this.year,
+        month: this.month,
         userNo: this.userNo
       }            
       
-      await this.$store.dispatch('DIARY_DATA', param)
+      this.$store.dispatch('DIARY_DATA', param)
         .then(()=>{
           this.calendarEvent = this.$store.getters.getDiaryList
-          if(this.regDate != ''){
-            for(var i =0; i<this.calendarEvent.length; i++){              
+          if(this.regDate){
+            //filter
+            for(var i =0; i<this.calendarEvent.length; i++){
               if(this.regDate == this.calendarEvent[i].regDate){
                 this.dayEventData.push(this.calendarEvent[i]);
               }
             }
+            // const result = this.calendarEvent.filter(cal => this.regDate == cal.regDate){
+            //   this.dayEventData = […this.dayEventData, …result]
+            // }
           }
         })
-      
-      
     }
     ,
-    prevMonth(){      
+    prevMonth(){
+      //day.js
       if(this.currentMonth - 1 < 1){                
         this.currentYear = this.currentYear-1;
         this.currentMonth = 12;

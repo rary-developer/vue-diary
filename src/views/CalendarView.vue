@@ -130,17 +130,30 @@ export default {
     }
   },
 
-  methods: {    
-    async fetchDiary(year, month){      
+  methods: {
+    async fetchDiary(year, month){
       const param = {
         year : year,
         month : month,
         userNo : this.$store.getters.getUserNo,
       }
-      
-      const response = await UserSvc.fetchDiaryList(param);            
-      var eventData = response.data.data;
-      this.postData(eventData);                        
+
+      //const response = await UserSvc.fetchDiaryList(param);
+      //var eventData = response.data.data;
+      //this.postData(eventData);
+
+      await this.$store.dispatch('DIARY_DATA', param)
+          .then(()=>{
+            var eventData = this.$store.getters.getDiaryList
+            this.postData(eventData);
+            if(this.regDate != ''){
+              for(var i =0; i<this.calendarEvent.length; i++){
+                if(this.regDate == this.calendarEvent[i].regDate){
+                  this.dayEventData.push(this.calendarEvent[i]);
+                }
+              }
+            }
+          })
     }
     ,
 

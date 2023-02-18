@@ -1,5 +1,5 @@
 <template>
-  <div ckass="contents">
+  <div class="contents">
     <div class="form-wrapper form-wrapper-sm">
       <form @submit.prevent="submitForm" class="form">
         <div>
@@ -49,7 +49,7 @@ export default {
           return;
         }else if(response.data.code === 200){
           alert("회원가입이 성공했습니다.");
-          this.$router.push({path:"/login"});
+          this.$router.push({path:"/login"}); //replace 히스토리 스택.
         }                
       }
       catch(error){

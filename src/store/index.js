@@ -9,6 +9,8 @@ import UserSvc from '@/service/UserSvc';
 
 Vue.use(Vuex);
 
+//모듈 나누기
+//cookie => localStorage
 export default new Vuex.Store({
   state: {
     userId: getUserIdFromCookie() || '',
@@ -43,7 +45,7 @@ export default new Vuex.Store({
   actions: {
     async DIARY_DATA({commit}, param){
       this.diaryList = [];
-      const {data} = await UserSvc.fetchDiaryList(param);      
+      const {data} = await UserSvc.fetchDiaryList(param);
       commit('setDiaryList',data.data);
       return data;
     }
