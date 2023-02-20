@@ -1,34 +1,28 @@
-function saveUserNoToCookie(userData) {  
-  document.cookie = `userNo=${userData.userNo}`;
+function saveUserNoToLocalStorage(userData) {
+  localStorage.setItem("userNo",`${userData.userNo}`);
 }
 
-function saveUserIdToCookie(userData){
-  document.cookie = `userId=${userData.userId}`;
+function saveUserIdToStorage(userData){
+  localStorage.setItem("userId",`${userData.userId}`);
 }
 
-function getUserNoFromCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)userNo\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  );
+function getUserNoFromLocalStorage() {
+  return localStorage.getItem("userNo");
 }
 
-function getUserIdFromCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  );
+function getUserIdFromLocalStorage() {
+  return localStorage.getItem("userId");
 }
 
-function deleteCookie(str , str2) {  
-  document.cookie = `${str}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-  document.cookie = `${str2}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+function deleteLocalStorage(str , str2) {
+  localStorage.removeItem(str);
+  localStorage.removeItem(str2);
 }
 
-export {  
-  saveUserNoToCookie,  
-  saveUserIdToCookie,
-  getUserNoFromCookie,
-  getUserIdFromCookie,
-  deleteCookie,
+export {
+  saveUserNoToLocalStorage,
+  saveUserIdToStorage,
+  getUserNoFromLocalStorage,
+  getUserIdFromLocalStorage,
+  deleteLocalStorage,
 };

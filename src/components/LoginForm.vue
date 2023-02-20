@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {saveUserNoToCookie,saveUserIdToCookie} from '@/utils/cookies';
+import {saveUserNoToLocalStorage,saveUserIdToStorage} from '@/utils/cookies';
 import UserSvc from '@/service/UserSvc';
 
 export default {
@@ -56,10 +56,10 @@ export default {
           alert("아이디 혹은 비밀번호가 잘못됐습니다.");
           return;
         }else if(response.data.code === 200){          
-          this.$store.commit('setUserData', response.data);          
-          saveUserNoToCookie(response.data.data.userData);
-          saveUserIdToCookie(response.data.data.userData);
-          this.$router.push('/calendar2')
+          this.$store.commit('setUserData', response.data);
+          saveUserNoToLocalStorage(response.data.data.userData);
+          saveUserIdToStorage(response.data.data.userData);
+          this.$router.replace('/calendar2')
         }
 
       }catch(error){

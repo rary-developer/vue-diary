@@ -1,9 +1,9 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import {
-  getUserNoFromCookie,
-  getUserIdFromCookie,
-  deleteCookie
+  getUserNoFromLocalStorage,
+  getUserIdFromLocalStorage,
+  deleteLocalStorage
 } from '@/utils/cookies'
 import UserSvc from '@/service/UserSvc';
 
@@ -13,8 +13,8 @@ Vue.use(Vuex);
 //cookie => localStorage
 export default new Vuex.Store({
   state: {
-    userId: getUserIdFromCookie() || '',
-    userNo: getUserNoFromCookie() || '',
+    userId: getUserNoFromLocalStorage() || '',
+    userNo: getUserIdFromLocalStorage() || '',
     diaryList: [],
   },
   getters: {
@@ -36,7 +36,7 @@ export default new Vuex.Store({
     clearUserData(state){      
       state.userNo = '';
       state.userId = '';
-      deleteCookie('userNo','userId');      
+      deleteLocalStorage('userNo','userId');
     },
     setDiaryList(state, data){
       state.diaryList = data;

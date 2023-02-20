@@ -68,6 +68,11 @@ export default {
   components:{
     ModalView
   },
+  // computed:{
+  //   setUserNo(){
+  //     return this.userNo = this.$store.getters.getUserNo;
+  //   }
+  // },
   data(){
     return{
       userNo: this.$store.getters.getUserNo, //computed
@@ -149,7 +154,7 @@ export default {
               }
             }
             // const result = this.calendarEvent.filter(cal => this.regDate == cal.regDate){
-            //   this.dayEventData = […this.dayEventData, …result]
+            //   this.dayEventData = [this.dayEventData, …result]
             // }
           }
         })
@@ -163,8 +168,7 @@ export default {
       }else{        
         this.currentMonth = this.currentMonth-1;
       }      
-      //console.log(this.currentYear, this.currentMonth);
-      // console.log(new Date(this.currentYear, this.currentMonth, this.currentDate).getFullYear());
+
       this.calendarRender();
     },
     nextMonth(){
@@ -300,7 +304,7 @@ export default {
     this.currentDate = date.getDate(); // 달력에서 표기하는 일    
     
     //var thisMonth = new Date(date.getFullYear(), date.getMonth()+1, date.getDate());
-    
+    //this.setUserNo();
     this.calendarRender();
   },
 }
