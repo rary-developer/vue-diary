@@ -1,6 +1,6 @@
 export default{
   isLogin(state){
-    return state.userNo !== '';
+    return state.userNo;
   },
   getUserNo(state){
     return state.userNo;

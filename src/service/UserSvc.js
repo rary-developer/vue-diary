@@ -38,6 +38,18 @@ class userSvc extends Service{
         return response;
       })
   }
+  fetchMemoryList(param={}){
+    return this.get('/api/memory/',param)
+      .then(response => {
+        return response;
+      })
+  }
+  fetchMemoryInfo(param={}){
+    return this.get('/api/memory/', param)
+      .then(response => {
+        return response;
+      })
+  }
 }
 
 export default new userSvc()

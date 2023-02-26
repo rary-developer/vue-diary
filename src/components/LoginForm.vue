@@ -52,7 +52,6 @@ export default {
 
         
         const response = await UserSvc.signIn(userData);        
-        console.log(response);
         if(response == -1){                    
           alert("아이디 혹은 비밀번호가 잘못됐습니다.");
           return;
