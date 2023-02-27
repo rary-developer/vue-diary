@@ -30,8 +30,11 @@ export default new VueRouter({
     },
     {
       path: '/calendar2',
-      component: () => import('@/views/CalendarView2.vue'),
-      
+      component: () => import('@/views/CalendarView2.vue'),      
+    },
+    {
+      path: '/memory',
+      component: () => import('@/views/MemoryView.vue'),      
     },
   ]
 });
