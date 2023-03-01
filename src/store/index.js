@@ -20,8 +20,8 @@ export default new Vuex.Store({
   // }
 
   state:{
-    userId: getUserNoFromLocalStorage() || '',
-    userNo: getUserIdFromLocalStorage() || '',
+    userId: getUserIdFromLocalStorage() || '',
+    userNo: getUserNoFromLocalStorage() || '',
     diaryList: [],
   },
   getters:{
@@ -36,7 +36,7 @@ export default new Vuex.Store({
     },
   },
   mutations:{
-    setUserData(state, data){            
+    setUserData(state, data){                  
       state.userId = data.data.userData.userId;
       state.userNo = data.data.userData.userNo;
     },
@@ -52,8 +52,7 @@ export default new Vuex.Store({
   actions:{
     async DIARY_DATA({commit}, param){
         this.diaryList = [];
-        const {data} = await UserSvc.fetchDiaryList(param);
-        console.log(data);
+        const {data} = await UserSvc.fetchDiaryList(param);        
         commit('setDiaryList',data.data);
         return data;
     },

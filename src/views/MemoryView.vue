@@ -2,15 +2,35 @@
   <div>
     <div class="main list-container contents">
       <h1 class="page-header">My Memory</h1>
-      <div>
-
+      <div div="row g-3">
+        <div class="col">
+          <input 
+            value="keyword"            
+            class="form-control"
+            placeholder="검색어를 입력해주세요."
+          >
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-primary">Primary</button>
+        </div>
       </div>
       <ul>
-        <div>img</div>
-        <div>
-          내용일부
-          아래 날짜
-        </div>
+        <li>
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="" class="img-fluid rounded-start">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </li>        
       </ul>
     </div>
   </div>
@@ -31,5 +51,8 @@ export default {
   margin: 0 auto;
   padding: 0 5px;
   width: 100%;  
+}
+li{
+  list-style: none;
 }
 </style>

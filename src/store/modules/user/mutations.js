@@ -2,7 +2,6 @@ import {
   deleteLocalStorage
 } from '@/utils/cookies'
 
-
 export default{
   setUserData(state, data){            
     state.userId = data.data.userData.userId;

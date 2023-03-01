@@ -1,4 +1,4 @@
-function saveUserNoToLocalStorage(userData) {
+function saveUserNoToLocalStorage(userData) {  
   localStorage.setItem("userNo",`${userData.userNo}`);
 }
 
