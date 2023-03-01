@@ -2,8 +2,8 @@
   <div>
     <div class="main list-container contents">
       <h1 class="page-header">My Memory</h1>
-      <div div="row g-3">
-        <div class="col">
+      <div class="card mb-3">
+        <div class="">
           <input 
             value="keyword"            
             class="form-control"
@@ -11,7 +11,7 @@
           >
         </div>
         <div class="col-3">
-          <button type="button" class="btn btn-primary">Primary</button>
+          <button type="button" class="btn btn-primary" style="display:inline-block">필터</button>
         </div>
       </div>
       <ul>
@@ -22,10 +22,13 @@
                 <img src="" class="img-fluid rounded-start">
               </div>
               <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
+                <div class="card-body">                  
                   <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  <p class="card-text"  style="text-align: right;">
+                    <small class="text-muted">
+                      Last
+                    </small>
+                  </p>
                 </div>
               </div>
             </div>
