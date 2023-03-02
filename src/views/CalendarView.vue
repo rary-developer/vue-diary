@@ -42,7 +42,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 //import { INITIAL_EVENTS } from '@/utils/event-utils'
 import UserSvc from '@/service/UserSvc';
-import ModalView from '../components/ModalView.vue';
+import ModalView from '../components/modal/CalendarModalView.vue';
 
 export default {
   created(){    
