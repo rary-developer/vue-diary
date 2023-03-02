@@ -62,7 +62,7 @@
 
 <script>
 import UserSvc from '@/service/UserSvc';
-import ModalView from '../components/ModalView.vue';
+import ModalView from '../components/modal/CalendarModalView.vue';
 
 export default {  
   components:{

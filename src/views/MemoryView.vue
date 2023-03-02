@@ -14,8 +14,14 @@
           <button type="button" class="btn btn-primary" style="display:inline-block">필터</button>
         </div>
       </div>
+      <div class="mb-3">
+        <p  style="float:left; font-size: 16px;">n 개중 n개</p>
+        <button type="button" class="btn" style="">
+          등록
+        </button>
+      </div>
       <ul>
-        <li>
+        <li class="row">
           <div class="card mb-3">
             <div class="row g-0">
               <div class="col-md-4">
@@ -32,16 +38,33 @@
                 </div>
               </div>
             </div>
-          </div>          
-        </li>        
+          </div>
+        </li>
       </ul>
     </div>
-  </div>
+
+    <ModalView v-if="showModal">
+    
+    </ModalView>
+  </div>  
+  
 </template>
 
 <script>
-export default {
+import ModalView from '../components/modal/MemoryModalView.vue'
 
+export default {
+  components:{
+    ModalView,
+  },
+  data(){
+    return {
+      showModal: false,
+    }
+  },
+  methods:{
+    
+  }
 }
 </script>
 

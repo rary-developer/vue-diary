@@ -21,7 +21,11 @@ export default new VueRouter({
     },
     {
       path: '/modal',
-      component: () => import('@/components/ModalView.vue'),
+      component: () => import('@/components/modal/CalendarModalView.vue'),
+    },
+    {
+      path: '/modal2',
+      component: () => import('@/components/modal/MemoryModalView.vue'),
     },
     {
       path: '/calendar',
