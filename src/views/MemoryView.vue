@@ -2,7 +2,7 @@
   <div>
     <div class="main list-container contents">
       <h1 class="page-header">My Memory</h1>
-      <div class="card mb-3">
+      <div class="">
         <div class="">
           <input 
             value="keyword"            
@@ -11,7 +11,9 @@
           >
         </div>
         <div class="col-3">
-          <button type="button" class="btn btn-primary" style="display:inline-block">필터</button>
+          <button type="button" class="btn btn-primary" @click="fn_openModal()">
+            필터
+          </button>
         </div>
       </div>
       <div class="mb-3">
@@ -23,7 +25,7 @@
       <ul>
         <li class="row">
           <div class="card mb-3">
-            <div class="row g-0">
+            <div class="row g-0" style="height:100%">
               <div class="col-md-4">
                 <img src="" class="img-fluid rounded-start">
               </div>
@@ -43,7 +45,9 @@
       </ul>
     </div>
 
-    <ModalView v-if="showModal">
+    <ModalView v-if="showModal"
+      @close-modal="fn_closeModal"
+    >
     
     </ModalView>
   </div>  
@@ -63,7 +67,12 @@ export default {
     }
   },
   methods:{
-    
+    fn_openModal(){
+      this.showModal=true;
+    },
+    fn_closeModal(){
+      this.showModal=false;
+    },
   }
 }
 </script>
