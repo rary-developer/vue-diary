@@ -56,7 +56,8 @@ export default {
           alert("아이디 혹은 비밀번호가 잘못됐습니다.");
           return;
         }else if(response.data.code === 200){          
-          this.$store.commit('setUserData', response.data);
+          //this.$store.commit('setUserData', response.data);
+          this.$store.commit('userIndex/setUserData', response.data);
           saveUserNoToLocalStorage(response.data.data.userData);
           saveUserIdToStorage(response.data.data.userData);
           this.$router.replace('/calendar2')

@@ -75,7 +75,7 @@ export default {
   // },
   data(){
     return{
-      userNo: this.$store.getters.getUserNo, //computed
+      userNo: '', //computed
       currentYear: 0,
       currentMonth: 0,      
       currentDate: '',
@@ -140,7 +140,7 @@ export default {
       const param = {
         year: this.year,
         month: this.month,
-        userNo: this.userNo
+        userNo: this.$store.getters["userIndex/getUserNo"]
       }            
       
       this.$store.dispatch('DIARY_DATA', param)
@@ -224,7 +224,7 @@ export default {
         diaryNo: "",
         start: startStr,
         title: "",
-        userNo: this.$store.getters.getUserNo,
+        userNo: this.$store.getters["userIndex/getUserNo"],
       };      
       
       this.dayEventData.push(param);
@@ -243,7 +243,7 @@ export default {
       const param = {
         regDate: req.start,
         contents: req.contents,
-        userNo : this.$store.getters.getUserNo,
+        userNo: this.$store.getters["userIndex/getUserNo"],
       }
 
       const {data} = await UserSvc.saveDiary(param);
@@ -275,7 +275,7 @@ export default {
 				diaryNo: req.diaryNo,
 				regDate: req.start,
 				contents: req.contents,
-				userNo: this.$store.getters.getUserNo,
+        userNo: this.$store.getters["userIndex/getUserNo"],
 			}			
       
 			const { data } = await UserSvc.saveDiary(param);

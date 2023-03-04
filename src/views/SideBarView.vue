@@ -18,8 +18,8 @@
 <script>
 export default {
   computed:{
-    isUserLogin(){            
-      return this.$store.getters.isLogin;
+    isUserLogin(){
+      return this.$store.getters["userIndex/isLogin"];
     },  
   }  
 }

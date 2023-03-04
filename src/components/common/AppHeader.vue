@@ -4,7 +4,7 @@
     </div>
     <div class="navigations">
       <template v-if="isUserLogin">
-        <span v-if="isUserLogin" >{{ $store.state.userId }}</span>
+        <span v-if="isUserLogin" >{{ isUserLogin }}</span>
         <a href="javascript:;" @click="logoutUser" class="logout-button">
           로그아웃
         </a> 
@@ -21,13 +21,15 @@
 
 export default{
   computed:{
-    isUserLogin(){            
-      return this.$store.getters.isLogin;
+    isUserLogin(){
+      //return this.$store.getters.isLogin;
+      return this.$store.getters["userIndex/isLogin"];
+
     },    
   },
   methods: {
     logoutUser() {
-      this.$store.commit('clearUserData');
+      this.$store.commit('userIndex/clearUserData');
       this.$router.push('/login');
     }
   }

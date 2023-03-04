@@ -4,6 +4,6 @@ import {
 } from '@/utils/cookies'
 
 export default{
-  userId: getUserNoFromLocalStorage() || '',
-  userNo: getUserIdFromLocalStorage() || '',
+  userId: getUserIdFromLocalStorage() || '',
+  userNo: getUserNoFromLocalStorage() || '',
 }

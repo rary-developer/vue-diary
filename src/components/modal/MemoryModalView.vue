@@ -9,13 +9,7 @@
         <div class="form-wrapper">
           <div>
             <p><strong>검색날짜</strong></p>
-            <!-- <input type="date" v-bind="schDate" id="schDate"> -->
-            <CDateRangePicker
-              label="Date range"
-              locale="en-US"
-              v-model:start-date="vStartDate"
-              v-model:end-date="vEndDate" 
-            />
+            <input type="date" v-bind="schDate" id="schDate">
           </div>
           <div>
             <p><strong>위치</strong></p>
@@ -42,6 +36,8 @@
           </div>
         </div>
       </div>
+
+
     </div>
   </transition>
 </template>
@@ -50,7 +46,7 @@
 
 export default {
   components: {
-    
+
   },
   data(){
     return{
@@ -64,7 +60,7 @@ export default {
       this.schDate = "";
       this.schPlace = "";
       this.schPlace = "";
-    }
+    },
   }
 }
 </script>
