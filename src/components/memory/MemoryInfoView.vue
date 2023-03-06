@@ -3,7 +3,7 @@
     <div class="modal modal-overlay">
       <div class="modal-window">
         <div>
-          <div>
+          <div style="border: 1px solid bisque;">
             <p><strong>카테고리*</strong></p>
             <select>
               <option value="FOOD">음식</option>
@@ -25,22 +25,23 @@
         </div>
         <div>
           <p><strong>주소*</strong></p>
+          <div>
+            <input type="text" id="" @click="searchMap()" v-model="address">
+          </div>
         </div>
-      </div>
+        <div>
+          <p><strong>내용*</strong></p>
+          <textarea placeholder="내용을 입력하세요." maxlength="500" v-model="content" cols="80" rows="5">
 
-<!--      <template>-->
-<!--        <section class="test">-->
-<!--          <div class="post-box" v-if="postOpen">-->
-<!--            <template>-->
-<!--              <VueDaumPostcode @complete="oncomplete"/>-->
-<!--            </template>-->
-<!--          </div>-->
-<!--          <div class="form-box">-->
-<!--            <input disabled v-model="address" />-->
-<!--            <div @click="search">검색</div>-->
-<!--          </div>-->
-<!--        </section>-->
-<!--      </template>-->
+          </textarea>
+        </div>
+        <div>
+          <p><strong>사진첨부</strong></p>
+          <div>
+            
+          </div>
+        </div>
+      </div>      
     </div>
   </transition>
 </template>
@@ -53,26 +54,25 @@ export default {
     //VueDaumPostcode
   },
   date(){
-    return{
+    return{      
       address: '',
-      postOpen: false
+      postOpen: false,
+      content: '',
     }
   },
   computed:{
 
   },
-  methods:{
-    search(){
-      this.postOpen = true;
+  methods: {
+    searchMap: function() {
+        new daum.Postcode({
+            oncomplete: (data) => {
+                // console.log(this); // vue
+                this.address = data.address;
+            }
+        }).open();
     },
-    oncomplete(result){
-      if(result.userSelectedType === "R"){
-        this.address = result.roadAddress
-      }else{
-        this.address = result.jibunAddress
-      }
-      this.postOpen = false;
-    }
+    
   }
 }
 </script>
