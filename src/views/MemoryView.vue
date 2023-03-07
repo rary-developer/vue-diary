@@ -26,42 +26,16 @@
         </button>
       </div>
       <ul style="margin-top: 16px; border: 1px solid #679fe6">
-<!--        <li class="row">-->
-<!--          <div class="card mb-3">-->
-<!--            <div class="row g-0" style="height:100%">-->
-<!--              <div class="col-md-4">-->
-<!--                <img src="" class="img-fluid rounded-start">-->
-<!--              </div>-->
-<!--              <div class="col-md-8">-->
-<!--                <div class="card-body">                  -->
-<!--                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-<!--                  <p class="card-text"  style="text-align: right;">-->
-<!--                    <small class="text-muted">-->
-<!--                      Last-->
-<!--                    </small>-->
-<!--                  </p>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </li>-->
         <li class="">
-          <div class="">
-            <div class="" style="">
-              <div class="">
-                <img src="@/assets/logo.png" class="">
-              </div>
-              <div class="">
-                <div class="">
-                  <p class="">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <p class=""  style="text-align: right;">
-                    <small class="">
-                      Last
-                    </small>
-                  </p>
-                </div>
-              </div>
+          <div class="item">
+            <div class="img" style="">              
+              <img src="@/assets/logo.png" class="">              
             </div>
+            <div class="text">
+                <div class="etc"></div>
+                <p class="desc">내용 내용 내용 내용 내용 </p>
+                <p class="date">2023.03.07</p>
+              </div>
           </div>
         </li>
       </ul>
@@ -123,6 +97,13 @@ export default {
 li{
   list-style: none;
 }
+.item{
+  display: flex;
+  padding: 15px 0;
+  background-color: #fff;
+  margin: 0 15px;
+  border-bottom: 1px solid #ddd;
+}
 .btn{
   margin-left: 15px;
   font-weight: 700;
@@ -134,4 +115,36 @@ li{
   background: #9e9e9e;
   color: white;
 }
+.item .img{
+  width: 30%;
+  height: auto;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+.item .img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+.text{
+  width: 70%;
+  height: auto;
+  position: relative;
+  padding: 10px;  
+}
+.etc{
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+  padding-right: 30px;
+}
+.date{
+  font-size: 0.8rem;
+  margin-top: 1em;
+}
+
 </style>

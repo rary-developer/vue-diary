@@ -2,10 +2,13 @@
   <transition name="modal">
     <div class="modal modal-overlay">
       <div class="modal-window">
+        <h1>필터</h1>
+        <button @click="$emit('close-modal')" class="">닫기</button>
         <div>
-          <div style="border: 1px solid bisque;">
+          <div style="border: 1px solid magenta;">
             <p><strong>카테고리*</strong></p>
-            <select>
+            <select v-model="category">
+              <option value="">선택</option>
               <option value="FOOD">음식</option>
               <option value="SHOPING">쇼핑</option>
               <option value="TRIP">여행</option>
@@ -18,28 +21,32 @@
               <option value="REVIEW">리뷰</option>
             </select>
           </div>
-          <div>
+          <div style="border: 1px solid magenta">
             <p><strong>일자*</strong></p>
-            <input type="date"/>
+            <!-- <input type="date" v-model="regDate"/> -->
+            <date-picker v-model="regDate" range></date-picker>
           </div>
         </div>
-        <div>
+        <div style="border: 1px solid magenta;">
           <p><strong>주소*</strong></p>
           <div>
             <input type="text" id="" @click="searchMap()" v-model="address">
           </div>
         </div>
-        <div>
+        <div style="border: 1px solid magenta;">
           <p><strong>내용*</strong></p>
           <textarea placeholder="내용을 입력하세요." maxlength="500" v-model="content" cols="80" rows="5">
 
           </textarea>
         </div>
-        <div>
+        <div style="border: 1px solid magenta;">
           <p><strong>사진첨부</strong></p>
           <div>
             
           </div>
+        </div>
+        <div style="border: 1px solid magenta;">
+          <button>등록하기</button>
         </div>
       </div>      
     </div>
@@ -48,16 +55,21 @@
 
 <script>
 //import {VueDaumPostcode} from "vue-daum-postcode";
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
 export default {
   components:{
-    //VueDaumPostcode
+    DatePicker
   },
-  date(){
+  data(){
     return{      
-      address: '',
       postOpen: false,
+
+      address: '',      
       content: '',
+      category: '',
+      regDate: '',
     }
   },
   computed:{
