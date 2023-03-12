@@ -47,7 +47,9 @@
     
     </ModalFilterView>
 
-    <ModalEnrollView v-if="showEnrollModal">
+    <ModalEnrollView v-if="showEnrollModal"
+      @close-modal="fn_closeEnrollModal"
+    >
 
     </ModalEnrollView>
 
@@ -74,11 +76,15 @@ export default {
     fn_openFilterModal(){
       this.showFilterModal=true;
     },
-    fn_closeFilterModal(){
+    fn_closeFilterModal(){      
       this.showFilterModal=false;
     },
-    fn_openEnrollModal(){
+    fn_openEnrollModal(){      
       this.showEnrollModal = true;
+    },
+    fn_closeEnrollModal(){
+      console.log(123);
+      this.showEnrollModal = false;
     }
   }
 }
