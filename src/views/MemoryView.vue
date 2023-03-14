@@ -70,9 +70,22 @@ export default {
     return {
       showFilterModal: false,
       showEnrollModal: false,
+      memoryList : this.$store.getters["memoryIndex/getMemoryList"],
+      userNo : this.$store.getters["userIndex/getUserNo"],
     }
   },
   methods:{
+    memoryRender(){
+      const param = {
+        userNo : this.userNo
+      }
+
+      this.$store.dispatch("MEMORY_DATA", param)
+        .then((response)=>{
+          console.log(response);
+        })
+
+    },
     fn_openFilterModal(){
       this.showFilterModal=true;
     },
@@ -86,6 +99,9 @@ export default {
       console.log(123);
       this.showEnrollModal = false;
     }
+  },
+  mounted(){
+    this.memoryRender();
   }
 }
 </script>

@@ -54,12 +54,10 @@
           <p><strong>사진첨부</strong></p>
           <div class="add-file">
               <div 
-                class="thumb-img" 
-                v-for="(item, idx) in fileList" 
-                :key="idx" 
-                style="{ 'background-image' : `url('${item}')` }"
-              >
-              {{ item }}                  
+                class="img" 
+                v-for="(v, i) in fileList" 
+                :key="i"  
+                :style="{ 'background-image' : `url('${v}')` }">                  
               </div>
               <label 
                 for="btnFileUpload" 
@@ -88,6 +86,7 @@
 
 <script>
 //import {VueDaumPostcode} from "vue-daum-postcode";
+import UserSvc from '@/service/UserSvc';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
@@ -109,7 +108,7 @@ export default {
     }
   },
   computed:{
-
+    
   },
   methods: {
     searchMap: function() {
@@ -142,8 +141,24 @@ export default {
         }
       }
     },    
-    fn_save_memory(){
+    async fn_save_memory(){
+      const param = new FormData()
+        param.append('userNo',this.$store.getters["userIndex/getUserNo"]);
+        param.append('category',this.category);
+        param.append('address',this.address);
+        param.append('regData',this.regDate);
+        param.append('contents',this.content);
+        param.append('firstMultipartFile',this.fileList[0]);
+        param.append('secondMultipartFile',this.fileList[1]);
+        param.append('thirdMultipartFile',this.fileList[2]);
 
+      // await this.$store.dispatch('SAVE_MEMORY', param)
+      //   .then((response)=> {
+      //     console.log(response);
+      //   })
+
+      const {data} = await UserSvc.saveMemory(param);
+      
     }
   }
 }
@@ -185,7 +200,7 @@ export default {
   align-items: center;
   gap: 10px;
 }
-.thumb-img{
+.img{
   width: 100px;
   height: 100px;
   border: 1px solid #ddd;

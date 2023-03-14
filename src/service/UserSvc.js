@@ -50,6 +50,12 @@ class userSvc extends Service{
         return response;
       })
   }
+  saveMemory(param={}){
+    return this.post('/api/memory/save', param)
+      .then(response => {
+        console.log(response);
+      })
+  }
 }
 
 export default new userSvc()
