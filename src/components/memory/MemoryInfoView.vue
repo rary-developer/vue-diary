@@ -86,12 +86,15 @@
 
 <script>
 //import {VueDaumPostcode} from "vue-daum-postcode";
-import UserSvc from '@/service/UserSvc';
+import axios from 'axios';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
 export default {
-  components:{
+  mounted(){
+    this.fetchMemory();
+  }
+  ,components:{
     DatePicker
   },
   data(){
@@ -108,7 +111,7 @@ export default {
     }
   },
   computed:{
-    
+
   },
   methods: {
     searchMap: function() {
@@ -156,10 +159,21 @@ export default {
       //   .then((response)=> {
       //     console.log(response);
       //   })
-
-      const {data} = await UserSvc.saveMemory(param);
+      console.log(param);
+      await axios.post(`http://121.161.237.50:50005/api/memory/save`,param, {headers : {"Content-type":"multipart/form-data"}})
       
-    }
+    },
+    fetchMemory(){
+      const param = {
+        userNo : this.$store.getters["userIndex/getUserNo"],
+        page : 1,
+        limit : 100,
+      }      
+      this.$store.dispatch('MEMORY_DATA', param)
+        .then(({data})=>{
+          console.log(data)
+        })
+    },
   }
 }
 </script>

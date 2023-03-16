@@ -6,6 +6,7 @@ class Service{
       baseURL: 'http://121.161.237.50:50005',
       headers:{
         Accept:"application/json","Content-Type":"application/json"
+        //Content-type":"multipart/form-data 두개를 나눠야하나..
       },
       widthCredentials:true
     })    
