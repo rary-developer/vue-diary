@@ -77,7 +77,9 @@ export default {
   methods:{
     memoryRender(){
       const param = {
-        userNo : this.userNo
+        userNo : this.$store.getters["userIndex/getUserNo"],
+        page : 1,
+        limit : 100,
       }
 
       this.$store.dispatch("MEMORY_DATA", param)

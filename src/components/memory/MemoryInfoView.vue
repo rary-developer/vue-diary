@@ -36,7 +36,7 @@
         <div style="border: 1px solid magenta;">
           <p><strong>주소*</strong></p>
           <div>
-            <input type="text" id="" @click="searchMap" v-model="address" style="width:50%">
+            <input type="text" id="" @click="fn_searchMap" v-model="address" style="width:50%">
           </div>
         </div>
         <div style="border: 1px solid magenta;">
@@ -92,7 +92,7 @@ import 'vue2-datepicker/index.css';
 
 export default {
   mounted(){
-    this.fetchMemory();
+    //this.fetchMemory();
   }
   ,components:{
     DatePicker
@@ -114,7 +114,7 @@ export default {
 
   },
   methods: {
-    searchMap: function() {
+    fn_searchMap: function() {
         new daum.Postcode({
             oncomplete: (data) => {
                 // console.log(this); // vue
@@ -159,21 +159,10 @@ export default {
       //   .then((response)=> {
       //     console.log(response);
       //   })
-      console.log(param);
-      await axios.post(`http://121.161.237.50:50005/api/memory/save`,param, {headers : {"Content-type":"multipart/form-data"}})
+      // console.log(param);
+      // await axios.post(`http://121.161.237.50:50005/api/memory/save`,param, {headers : {"Content-type":"multipart/form-data"}})
       
-    },
-    fetchMemory(){
-      const param = {
-        userNo : this.$store.getters["userIndex/getUserNo"],
-        page : 1,
-        limit : 100,
-      }      
-      this.$store.dispatch('MEMORY_DATA', param)
-        .then(({data})=>{
-          console.log(data)
-        })
-    },
+    },    
   }
 }
 </script>

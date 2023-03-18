@@ -9,15 +9,17 @@
         <div class="form-wrapper">
           <div>
             <p><strong>검색날짜</strong></p>
-            <input type="date" v-bind="schDate" id="schDate">
+            <date-picker v-model="regDate" valueType="format"></date-picker>
           </div>
           <div>
             <p><strong>위치</strong></p>
-            <input type="text" v-bind="schPlace" id="schPlace">
+            <div>
+              <input type="text" id="" @click="fn_searchMap" v-model="address" style="width:50%">
+            </div>
           </div>
           <div>
             <p><strong>카테고리</strong></p>
-            <select name="" v-bind="schCategory" id="schCategory">
+            <select name="" v-bind="category" id="schCategory">
               <option value="FOOD">음식</option>
               <option value="SHOPING">쇼핑</option>
               <option value="TRIP">여행</option>
@@ -29,11 +31,11 @@
               <option value="EXHIBITION">취미</option>
               <option value="REVIEW">리뷰</option>
             </select>
-          </div>
-          <div>
-            <button type="button" @click="fn_btmReset()">초기화</button>
-            <button type="button">적용</button>
-          </div>
+          </div>          
+          <div style="border: 1px solid magenta; margin-top:  24px;">
+          <button type="button" @click="fn_btmReset()">초기화</button>
+          <button type="button">적용</button>
+        </div>
         </div>
       </div>
 
@@ -43,16 +45,17 @@
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
 
 export default {
   components: {
-
+    DatePicker
   },
   data(){
     return{
-      schDate:'',
-      schPlace:'',
-      schCategory:'',
+      address: '',            
+      category: '',
+      regDate: '',
     }
   },
   methods:{
@@ -60,6 +63,14 @@ export default {
       this.schDate = "";
       this.schPlace = "";
       this.schPlace = "";
+    },
+    fn_searchMap: function() {
+        new daum.Postcode({
+            oncomplete: (data) => {
+                // console.log(this); // vue
+                this.address = data.address;
+            }
+        }).open();
     },
   }
 }
