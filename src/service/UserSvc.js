@@ -44,9 +44,8 @@ class userSvc extends Service{
         return response;
       })
   }
-  fetchMemoryInfo(param={}){
-    console.log(param);
-    return this.get('/api/memory/', param)
+  fetchMemoryInfo(param={}){    
+    return this.get(`/api/memory/${param.memoryNo}`)
       .then(response => {
         return response;
       })

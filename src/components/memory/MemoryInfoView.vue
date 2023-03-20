@@ -13,7 +13,7 @@
         <div>
           <div style="border: 1px solid magenta;">
             <p><strong>카테고리*</strong></p>
-            <select v-model="category">
+            <select v-model="category" >
               <option value="">선택</option>
               <option value="FOOD">음식</option>
               <option value="SHOPING">쇼핑</option>
@@ -76,7 +76,8 @@
           </div>
         </div>
         <div style="border: 1px solid magenta; margin-top: 24px;">
-          <button @click="fn_save_memory" class="btn">등록하기</button>
+          <button v-if="this.memoryInfo == null" @click="fn_save_memory" class="btn">등록하기</button>
+          <button v-if="this.memoryInfo != null" @click="fn_save_memory" class="btn">수정하기</button>          
           <button @click="$emit('close-modal')" class="btn">취소하기</button>
         </div>
       </div>      
@@ -86,13 +87,17 @@
 
 <script>
 //import {VueDaumPostcode} from "vue-daum-postcode";
-import axios from 'axios';
+//import axios from 'axios';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
 export default {
+  name : 'memoryNo',
+  props: ['memoryNo'],
   mounted(){
-    //this.fetchMemory();
+    if(this.memoryNo != ''){
+      this.fn_memoryInfo();
+    }
   }
   ,components:{
     DatePicker
@@ -163,6 +168,17 @@ export default {
       // await axios.post(`http://121.161.237.50:50005/api/memory/save`,param, {headers : {"Content-type":"multipart/form-data"}})
       
     },    
+    async fn_memoryInfo(){
+      const param = {
+        memoryNo : this.memoryNo,
+      }
+
+      this.$store.dispatch("MEMORY_INFO", param)
+        .then(() =>{
+          this.memoryInfo = this.$store.getters.getMemoryInfo;          
+        })
+
+    }
   }
 }
 </script>

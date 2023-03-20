@@ -20,24 +20,24 @@
         </div>
       </div>
       <div class="" style="display:flex; margin-top:16px;height:40px;border: 1px solid #4CAF50">
-        <p  style="">n 개중 n개</p>
+        <p  style="">{{ memoryList.length }} 개중 {{memoryList.length}}개</p>
         <button type="button" @click="fn_openEnrollModal()" class="btn" style="">
           등록
         </button>
       </div>
       <ul style="margin-top: 16px; border: 1px solid #679fe6">
-        <li class="">
-          <div class="item">
+        <li v-for="(item, index) in memoryList" :key="index">
+          <div class="item" @click="fn_memory_info(item.memoryNo)">
             <div class="img" style="">              
-              <img src="@/assets/logo.png" class="">              
+              <img :src="`http://121.161.237.50:9999/origin/${item.firstPhoto.photoUrl}`" class="">              
             </div>
-            <div class="text">
-                <div class="etc"></div>
-                <p class="desc">내용 내용 내용 내용 내용 </p>
-                <p class="date">2023.03.07</p>
-              </div>
+            <div class="text">                
+              <p class="desc">{{ item.contents }}</p>
+              <p class="date">2023.03.07</p>
+            </div>
+            <div class="xi-ellippsis-h"></div>
           </div>
-        </li>
+        </li>                  
       </ul>
     </div>
 
@@ -48,6 +48,7 @@
     </ModalFilterView>
 
     <ModalEnrollView v-if="showEnrollModal"
+      v-bind:memoryNo="memoryNo"
       @close-modal="fn_closeEnrollModal"
     >
 
@@ -70,8 +71,16 @@ export default {
     return {
       showFilterModal: false,
       showEnrollModal: false,
-      memoryList : this.$store.getters["memoryIndex/getMemoryList"],
+      memoryList : [],
       userNo : this.$store.getters["userIndex/getUserNo"],
+
+      page : 1,
+      limit : 100,
+      regDate : '',
+      address : '',
+      category : '',
+      
+      memoryNo : '',
     }
   },
   methods:{
@@ -83,8 +92,8 @@ export default {
       }
 
       this.$store.dispatch("MEMORY_DATA", param)
-        .then((response)=>{
-          console.log(response);
+        .then(()=>{
+          this.memoryList = this.$store.getters.getMemoryList;
         })
 
     },
@@ -95,11 +104,16 @@ export default {
       this.showFilterModal=false;
     },
     fn_openEnrollModal(){      
+      this.memoryNo = '';
       this.showEnrollModal = true;
     },
-    fn_closeEnrollModal(){
-      console.log(123);
+    fn_closeEnrollModal(){      
       this.showEnrollModal = false;
+    },
+    fn_memory_info(memoryNo){            
+      this.memoryNo = memoryNo;
+
+      this.showEnrollModal = true;
     }
   },
   mounted(){
@@ -126,7 +140,7 @@ li{
   padding: 15px 0;
   background-color: #fff;
   margin: 0 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;  
 }
 .btn{
   margin-left: 15px;
@@ -152,7 +166,7 @@ li{
   object-position: center center;
 }
 .text{
-  width: 70%;
+  width: 60%;
   height: auto;
   position: relative;
   padding: 10px;  
@@ -169,6 +183,7 @@ li{
 .date{
   font-size: 0.8rem;
   margin-top: 1em;
+  color : #9e9e9e;
 }
 
 </style>

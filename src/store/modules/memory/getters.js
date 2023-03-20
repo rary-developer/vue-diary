@@ -1,5 +1,8 @@
 export default{
-  getMemoryList(state){
+  getMemoryList(state){    
     return state.memoryList;
+  },
+  getMemoryInfo(state){    
+    return state.memoryInfo;
   }
 }
