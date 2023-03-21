@@ -33,8 +33,8 @@
             </select>
           </div>          
           <div style="border: 1px solid magenta; margin-top:  24px;">
-          <button type="button" @click="fn_btmReset()">초기화</button>
-          <button type="button">적용</button>
+          <button type="button" class="btn" @click="fn_btmReset()">초기화</button>
+          <button type="button" class="btn" >적용</button>
         </div>
         </div>
       </div>
@@ -95,26 +95,25 @@ export default {
   border-radius: 4px;
   overflow: scroll;	
 	width: 50%;
-	height: 50%;
+	height: 70%;
 }
 .modal-top{
   padding: 20px;
   display: flex;
   justify-content: space-between;
 }
-.modal-card{
-	padding: 10px 20px;	
-}
-.modal-footer{
-	background: #ccc;
-  padding: 10px;
-  text-align: right;	
-}
 .show{
 	display: block;
 }
 .hide{
 	display: none;
+}
+.btn{
+  margin-left: 15px;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  padding: 0 24px;
+  height: 40px;
 }
 .txt{
 	width: 70%;

@@ -10,10 +10,10 @@
           >
             <i class="xi-close"></i>
           </button>         
-        <div>
+        <div class="form-wrapper">
           <div style="border: 1px solid magenta;">
             <p><strong>카테고리*</strong></p>
-            <select v-model="category" >
+            <select v-model="category" :value="this.memoryInfo.category">
               <option value="">선택</option>
               <option value="FOOD">음식</option>
               <option value="SHOPING">쇼핑</option>
@@ -110,7 +110,7 @@ export default {
       content: '',
       category: '',
       regDate: '',
-      
+      memoryInfo : [],
       fileList : [],
       
     }
@@ -176,6 +176,7 @@ export default {
       this.$store.dispatch("MEMORY_INFO", param)
         .then(() =>{
           this.memoryInfo = this.$store.getters.getMemoryInfo;          
+          
         })
 
     }
