@@ -33,7 +33,7 @@ class userSvc extends Service{
       })
   }    
   saveDiary(param={}){
-    return this.post('/api/diary/save', param)
+    return this.post('/api/diary/save/', param)
       .then(response => {
         return response;
       })
@@ -51,11 +51,13 @@ class userSvc extends Service{
       })
   }
   saveMemory(param={}){
-    return this.post('/api/memory/save', param)
+    return this.post(`/api/memory/save`, param)
       .then(response => {
         console.log(response);
       })
-  }
+  }  
 }
+
+
 
 export default new userSvc()

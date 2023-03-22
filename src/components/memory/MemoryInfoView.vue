@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal modal-overlay">
       <div class="modal-window">
-        <h1>필터</h1>        
+        <h1>info</h1>        
           <button 
             @click="$emit('close-modal')" 
             class="" 
@@ -10,7 +10,7 @@
           >
             <i class="xi-close"></i>
           </button>         
-        <div class="form-wrapper">
+        <div class="wrapper">
           <div style="border: 1px solid magenta;">
             <p><strong>카테고리*</strong></p>
             <select v-model="category" :value="this.memoryInfo.category">
@@ -76,8 +76,7 @@
           </div>
         </div>
         <div style="border: 1px solid magenta; margin-top: 24px;">
-          <button v-if="this.memoryInfo == null" @click="fn_save_memory" class="btn">등록하기</button>
-          <button v-if="this.memoryInfo != null" @click="fn_save_memory" class="btn">수정하기</button>          
+          <button @click="fn_save_memory" class="btn">등록하기</button>          
           <button @click="$emit('close-modal')" class="btn">취소하기</button>
         </div>
       </div>      
@@ -87,7 +86,7 @@
 
 <script>
 //import {VueDaumPostcode} from "vue-daum-postcode";
-//import axios from 'axios';
+import axios from 'axios';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
@@ -151,21 +150,23 @@ export default {
     },    
     async fn_save_memory(){
       const param = new FormData()
-        param.append('userNo',this.$store.getters["userIndex/getUserNo"]);
-        param.append('category',this.category);
-        param.append('address',this.address);
-        param.append('regData',this.regDate);
-        param.append('contents',this.content);
-        param.append('firstMultipartFile',this.fileList[0]);
-        param.append('secondMultipartFile',this.fileList[1]);
-        param.append('thirdMultipartFile',this.fileList[2]);
-
-      // await this.$store.dispatch('SAVE_MEMORY', param)
-      //   .then((response)=> {
-      //     console.log(response);
-      //   })
-      // console.log(param);
-      // await axios.post(`http://121.161.237.50:50005/api/memory/save`,param, {headers : {"Content-type":"multipart/form-data"}})
+      param.append('userNo',this.$store.getters["userIndex/getUserNo"]);      
+      param.append('category',this.category);
+      param.append('address',this.address);
+      param.append('regData',this.regDate);
+      param.append('contents',this.content);
+      param.append('firstMultipartFile',this.fileList[0]);
+      param.append('secondMultipartFile',this.fileList[1]);
+      param.append('thirdMultipartFile',this.fileList[2]);      
+      
+      await this.$store.dispatch('SAVE_MEMORY', param)
+        .then((response)=> {
+          console.log(response);
+        })
+      console.log(param);
+      /* await axios.post(`http://121.161.237.50:50005/api/memory/save/`,param, {headers: {
+                'Content-Type': 'multipart/formed-data',
+            }}) */
       
     },    
     async fn_memoryInfo(){

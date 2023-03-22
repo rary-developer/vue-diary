@@ -5,7 +5,8 @@ class Service{
     this.$axios = axios.create({
       baseURL: 'http://121.161.237.50:50005',
       headers:{
-        Accept:"application/json","Content-Type":"application/json"
+        Accept:"application/json",
+        "Content-Type":"multipart/form-data"
         //Content-type":"multipart/form-data 두개를 나눠야하나..
       },
       widthCredentials:true

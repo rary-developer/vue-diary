@@ -34,7 +34,7 @@
           </div>          
           <div style="border: 1px solid magenta; margin-top:  24px;">
           <button type="button" class="btn" @click="fn_btmReset()">초기화</button>
-          <button type="button" class="btn" >적용</button>
+          <button @click="$emit('filter_info', this.regDate)" type="button" class="btn" >적용</button>
         </div>
         </div>
       </div>

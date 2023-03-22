@@ -43,6 +43,7 @@
 
     <ModalFilterView v-if="showFilterModal"
       @close-modal="fn_closeFilterModal"
+      @filter-info="fn_filter_info"
     >
     
     </ModalFilterView>
@@ -114,7 +115,11 @@ export default {
       this.memoryNo = memoryNo;
 
       this.showEnrollModal = true;
+    },
+    fn_filter_info(regDate){
+      console.log(regDate);
     }
+
   },
   mounted(){
     this.memoryRender();

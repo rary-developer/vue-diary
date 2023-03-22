@@ -11,5 +11,11 @@ export default{
     this.memoryInfo = [];
     const {data} = await UserSvc.fetchMemoryInfo(param);        
     commit('setMemoryInfo', data.data);    
+  },
+  async SAVE_MEMORY({commit}, param){
+    console.log(param);
+    const {data} = await UserSvc.saveMemory(param);
+    console.log(data);
+    
   }
 }
