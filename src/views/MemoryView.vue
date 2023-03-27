@@ -6,7 +6,7 @@
         <div class="schCond" style="display:flex; width: 100%; height: 40px">
           <input 
             value=""
-            class=""
+            class=""            
             style="width:80%"
             placeholder="검색어를 입력해주세요."
           >
@@ -51,6 +51,7 @@
     <ModalEnrollView v-if="showEnrollModal"
       v-bind:memoryNo="memoryNo"
       @close-modal="fn_closeEnrollModal"
+      @fn_memory_save="fn_memory_save"
     >
 
     </ModalEnrollView>
@@ -74,13 +75,15 @@ export default {
       showEnrollModal: false,
       memoryList : [],
       userNo : this.$store.getters["userIndex/getUserNo"],
+      searchParam : {
+        page : 1,
+        limit : 100,
+        regDate : '',
+        address : '',
+        category : '',
+        contents : '',        
+      },
 
-      page : 1,
-      limit : 100,
-      regDate : '',
-      address : '',
-      category : '',
-      
       memoryNo : '',
     }
   },
@@ -115,6 +118,9 @@ export default {
       this.memoryNo = memoryNo;
 
       this.showEnrollModal = true;
+    },
+    fn_memory_save(item){
+      console.log(item);
     },
     fn_filter_info(regDate){
       console.log(regDate);
