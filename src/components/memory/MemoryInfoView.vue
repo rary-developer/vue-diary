@@ -11,73 +11,76 @@
             <i class="xi-close"></i>
           </button>         
         <div class="wrapper">
-          <div style="border: 1px solid magenta;">
-            <p><strong>카테고리*</strong></p>
-            <select v-model="category" :value="this.memoryInfo.category">
-              <option value="">선택</option>
-              <option value="FOOD">음식</option>
-              <option value="SHOPING">쇼핑</option>
-              <option value="TRIP">여행</option>
-              <option value="MOVIE">영화</option>
-              <option value="STUDY">공부</option>
-              <option value="CAFE">카페</option>
-              <option value="EXOTIC">해외</option>
-              <option value="CULTURAL_LIFE">생활</option>
-              <option value="EXHIBITION">취미</option>
-              <option value="REVIEW">리뷰</option>
-            </select>
-          </div>
-          <div style="border: 1px solid magenta">
-            <p><strong>일자*</strong></p>            
-            <!-- <date-picker v-model="regDate" range></date-picker> -->
-            <date-picker v-model="regDate" valueType="format"></date-picker>
-          </div>
-        </div>
-        <div style="border: 1px solid magenta;">
-          <p><strong>주소*</strong></p>
-          <div>
-            <input type="text" id="" @click="fn_searchMap" v-model="address" style="width:50%">
-          </div>
-        </div>
-        <div style="border: 1px solid magenta;">
-          <p><strong>내용*</strong></p>
-          <textarea 
-            placeholder="내용을 입력하세요." 
-            maxlength="500" 
-            v-model="content" 
-            cols="80" 
-            rows="5"
-          >
-          </textarea>
-        </div>
-        <div style="border: 1px solid magenta;">
-          <p><strong>사진첨부</strong></p>
-          <div class="add-file">
-              <div 
-                class="img" 
-                v-for="(v, i) in fileList" 
-                :key="i"  
-                :style="{ 'background-image' : `url('${v}')` }">                  
+          <!-- <div v-for="(item,index) in memoryInfo" :key="index">
+            {{ item.category }} -->
+            <div style="border: 1px solid magenta;">
+              <p><strong>카테고리*</strong></p>
+              <select :value="memoryInfo.category">
+                <option value="">선택</option>
+                <option value="FOOD">음식</option>
+                <option value="SHOPING">쇼핑</option>
+                <option value="TRIP">여행</option>
+                <option value="MOVIE">영화</option>
+                <option value="STUDY">공부</option>
+                <option value="CAFE">카페</option>
+                <option value="EXOTIC">해외</option>
+                <option value="CULTURAL_LIFE">생활</option>
+                <option value="EXHIBITION">취미</option>
+                <option value="REVIEW">리뷰</option>
+              </select>
+            </div>
+            <div style="border: 1px solid magenta">
+              <p><strong>일자*</strong></p>            
+              <!-- <date-picker v-model="regDate" range></date-picker> -->
+              <date-picker :value="memoryInfo.regDate" valueType="format"></date-picker>
+            </div>
+            <div style="border: 1px solid magenta;">
+              <p><strong>주소*</strong></p>
+              <div>
+                <input type="text" id="" @click="fn_searchMap" :value="memoryInfo.address" style="width:50%">
               </div>
-              <label 
-                for="btnFileUpload" 
-                class="fileLabel" 
-                v-if="this.fileList.length < 3"
+            </div>
+            <div style="border: 1px solid magenta;">
+              <p><strong>내용*</strong></p>
+              <textarea 
+                placeholder="내용을 입력하세요." 
+                maxlength="500" 
+                :value="memoryInfo.contents" 
+                cols="80" 
+                rows="5"
               >
-                <i class="xi-plus-circle-o"></i>
-              </label>
-              <input 
-                type="file" 
-                multiple 
-                @change="fn_file_change"
-                id="btnFileUpload"
-                style="display:none;"                
-              >
-          </div>
-        </div>
+              </textarea>
+            </div>
+            <div style="border: 1px solid magenta;">
+              <p><strong>사진첨부</strong></p>
+              <div class="add-file">                                
+                <div 
+                    class="img" 
+                    v-for="(v, i) in fileList" 
+                    :key="i"  
+                    :style="{ 'background-image' : `url(http://121.161.237.50:9999/origin/${v.photoUrl})` }">
+                  </div>
+                  <label 
+                    for="btnFileUpload" 
+                    class="fileLabel" 
+                    v-if="this.fileList.length < 3"
+                  >
+                    <i class="xi-plus-circle-o"></i>
+                  </label>
+                  <input 
+                    type="file" 
+                    multiple 
+                    @change="fn_file_change"
+                    id="btnFileUpload"
+                    style="display:none;"                
+                  >
+              </div>
+            </div>
+          <!-- </div> -->          
+        </div>                        
         <div style="border: 1px solid magenta; margin-top: 24px;">
-          <button @click="fn_save_memory" class="btn">등록하기</button>          
-          <button @click="$emit('close-modal')" class="btn">취소하기</button>
+          <button @click="$emit('fn_memory_save', memoryInfo)" class="btn">수정하기</button>          
+          <button @click="$emit('close-modal')" class="btn">삭제하기</button>
         </div>
       </div>      
     </div>
@@ -173,11 +176,24 @@ export default {
       const param = {
         memoryNo : this.memoryNo,
       }
-
+      this.memoryInfo = [];
       this.$store.dispatch("MEMORY_INFO", param)
         .then(() =>{
           this.memoryInfo = this.$store.getters.getMemoryInfo;          
           
+          if(this.memoryInfo.firstPhoto.photoUrl != null || 
+            this.memoryInfo.firstPhoto.photoUrl != undefined){
+            this.fileList.push(this.memoryInfo.firstPhoto);
+          }          
+          if(this.memoryInfo.secondPhoto.photoUrl != null || 
+            this.memoryInfo.secondPhoto.photoUrl != undefined){
+            this.fileList.push(this.memoryInfo.secondPhoto);          
+          }
+          if(this.memoryInfo.thirdPhoto.photoUrl != null || 
+            this.memoryInfo.thirdPhoto.photoUrl != undefined){
+            this.fileList.push(this.memoryInfo.thirdPhoto);          
+          }
+
         })
 
     }

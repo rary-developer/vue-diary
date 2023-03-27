@@ -9,17 +9,18 @@
         <div class="form-wrapper">
           <div>
             <p><strong>검색날짜</strong></p>
-            <date-picker v-model="regDate" valueType="format"></date-picker>
+            <date-picker v-model="searchParam.regDate" valueType="format"></date-picker>
           </div>
           <div>
             <p><strong>위치</strong></p>
             <div>
-              <input type="text" id="" @click="fn_searchMap" v-model="address" style="width:50%">
+              <input type="text" id="" @click="fn_searchMap" v-model="searchParam.address" style="width:50%">
             </div>
           </div>
           <div>
             <p><strong>카테고리</strong></p>
-            <select name="" v-bind="category" id="schCategory">
+            <select name="" v-model="searchParam.category" id="schCategory">
+              <option value="" selected>선택</option>
               <option value="FOOD">음식</option>
               <option value="SHOPING">쇼핑</option>
               <option value="TRIP">여행</option>
@@ -34,7 +35,7 @@
           </div>          
           <div style="border: 1px solid magenta; margin-top:  24px;">
           <button type="button" class="btn" @click="fn_btmReset()">초기화</button>
-          <button @click="$emit('filter_info', this.regDate)" type="button" class="btn" >적용</button>
+          <button @click="$emit('filter-info')" type="button" class="btn" >적용</button>
         </div>
         </div>
       </div>
@@ -53,9 +54,11 @@ export default {
   },
   data(){
     return{
-      address: '',            
-      category: '',
-      regDate: '',
+      searchParam:{
+        address: '',
+        category: '',
+        regDate: '',
+      }      
     }
   },
   methods:{
