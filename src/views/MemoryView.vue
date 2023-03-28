@@ -48,13 +48,13 @@
     
     </ModalFilterView>
 
-    <ModalEnrollView v-if="showEnrollModal"
+    <ModalEditView v-if="showEnrollModal"
       v-bind:memoryNo="memoryNo"
       @close-modal="fn_closeEnrollModal"
       @fn_memory_save="fn_memory_save"
     >
 
-    </ModalEnrollView>
+    </ModalEditView>
 
   </div>  
   
@@ -62,12 +62,14 @@
 
 <script>
 import ModalFilterView from '../components/modal/MemoryModalView.vue';
-import ModalEnrollView from '../components/memory/MemoryInfoView';
+import ModalAddView from '../components/modal/MemoryAddView.vue'
+import ModalEditView from '../components/memory/MemoryInfoView';
 
 export default {
   components:{
     ModalFilterView,
-    ModalEnrollView,
+    ModalEditView,
+    ModalAddView,
   },
   data(){
     return {
@@ -119,8 +121,26 @@ export default {
 
       this.showEnrollModal = true;
     },
-    fn_memory_save(item){
+    async fn_memory_save(item){
       console.log(item);
+      const param = new FormData();
+      param.append('userNo',this.$store.getters["userIndex/getUserNo"]);      
+      param.append('category',item.category);
+      param.append('address',item.address);
+      param.append('regData',item.regDate);
+      param.append('contents',item.content);
+      param.append('firstMultipartFile',item.firstPhoto);
+      param.append('secondMultipartFile',item.secondPhoto);
+      param.append('thirdMultipartFile',item.thirdPhoto);      
+
+      for(let key of param){
+        console.log(key, ":" , param.get(key) );
+      }
+
+      /* await this.$store.dispatch("SAVE_MEMORY", param)
+        .then((response) => {
+          console.log(response);
+        }) */
     },
     fn_filter_info(regDate){
       console.log(regDate);
