@@ -14,7 +14,7 @@
           <div>
             <p><strong>위치</strong></p>
             <div>
-              <input type="text" id="" @click="fn_searchMap" v-model="searchParam.address" style="width:50%">
+              <input type="text" id="" v-model="searchParam.address" style="width:50%">
             </div>
           </div>
           <div>
@@ -35,7 +35,7 @@
           </div>          
           <div style="border: 1px solid magenta; margin-top:  24px;">
           <button type="button" class="btn" @click="fn_btmReset()">초기화</button>
-          <button @click="$emit('filter-info')" type="button" class="btn" >적용</button>
+          <button @click="$emit('filter-info', searchParam)" type="button" class="btn" >적용</button>
         </div>
         </div>
       </div>

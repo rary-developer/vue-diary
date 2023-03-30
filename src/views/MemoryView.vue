@@ -8,6 +8,7 @@
             value=""
             class=""            
             style="width:80%"
+            v-model="searchParam.contents"            
             placeholder="검색어를 입력해주세요."
           >
           <button
@@ -94,7 +95,10 @@ export default {
       const param = {
         userNo : this.$store.getters["userIndex/getUserNo"],
         page : 1,
-        limit : 100,
+        limit : 100,                
+        /* address : this.searchParam.address,
+        category : this.searchParam.category,
+        contents : this.searchParam.contents, */
       }
 
       this.$store.dispatch("MEMORY_DATA", param)
@@ -142,8 +146,10 @@ export default {
           console.log(response);
         }) */
     },
-    fn_filter_info(regDate){
-      console.log(regDate);
+    fn_filter_info(param){
+      this.searchParam.regDate = param.regDate;
+      this.searchParam.address = param.address;
+      this.searchParam.category = param.category;
     }
 
   },
